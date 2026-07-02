@@ -7,26 +7,27 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif;}
-:root{--bg:#0F172A;--gelap:#1E293B;--biru:#3B82F6;--hijau:#22C55E;--merah:#EF4444;--teks:#F8FAFC;--abu:#94A3B8;}
+:root{--bg:#121212;--biru-tua:#162540;--biru-terang:#3B82F6;--hijau:#22C55E;--merah:#EF4444;--teks:#FFFFFF;--abu:#94A3B8;}
 body{background:var(--bg);color:var(--teks);padding-bottom:90px;}
 
-/* Pencarian & Notif */
+/* Header Atas */
 .header-atas{display:flex;align-items:center;gap:1rem;padding:1rem;}
-.cari{flex:1;background:var(--gelap);border-radius:12px;padding:.8rem 1rem;color:var(--teks);border:none;display:flex;align-items:center;gap:.5rem;}
+.cari{flex:1;background:var(--biru-tua);border-radius:12px;padding:.8rem 1rem;color:var(--teks);border:none;display:flex;align-items:center;gap:.5rem;}
 .ikon{font-size:1.4rem;padding:.5rem;}
 
-/* Saldo & Deposit */
-.kotak-saldo{background:var(--gelap);margin:0 1rem 1.5rem;border-radius:12px;padding:1.2rem;display:flex;justify-content:space-between;align-items:center;}
+/* Kotak Saldo (Latar Biru) */
+.kotak-saldo{background:var(--biru-tua);margin:0 1rem 1.5rem;border-radius:12px;padding:1.2rem;display:flex;justify-content:space-between;align-items:center;}
 .teks-saldo p{font-size:.9rem;color:var(--abu);margin-bottom:.3rem;}
 .total-uang{font-size:1.5rem;font-weight:bold;}
 .ubah{color:var(--merah);font-size:.9rem;}
 .daya-beli{font-size:.9rem;color:var(--abu);margin-top:.5rem;}
-.btn-deposit{background:var(--biru);color:white;border:none;padding:.7rem 1.2rem;border-radius:8px;font-weight:bold;}
+/* Tombol Deposit Diperkecil */
+.btn-deposit{background:var(--biru-terang);color:white;border:none;padding:.5rem .9rem;border-radius:8px;font-weight:bold;font-size:.9rem;display:flex;align-items:center;gap:.3rem;}
 
 /* Tab Menu Atas */
 .tab-atas{display:flex;gap:2rem;padding:0 1rem 1rem;overflow-x:auto;}
 .tab-item{color:var(--abu);padding:.5rem 0;white-space:nowrap;cursor:pointer;}
-.tab-item.aktif{color:var(--teks);border-bottom:2px solid var(--biru);font-weight:bold;}
+.tab-item.aktif{color:var(--teks);border-bottom:2px solid var(--biru-terang);font-weight:bold;}
 
 /* IHSG & Waktu */
 .ihsg{padding:1rem;}
@@ -35,29 +36,27 @@ body{background:var(--bg);color:var(--teks);padding-bottom:90px;}
 .kenaikan{color:var(--hijau);font-size:1rem;}
 .pilihan-waktu{display:flex;gap:.5rem;margin-bottom:1rem;}
 .btn-waktu{padding:.5rem 1rem;border-radius:6px;border:none;background:transparent;color:var(--abu);cursor:pointer;}
-.btn-waktu.aktif{background:var(--biru);color:white;}
+.btn-waktu.aktif{background:var(--biru-terang);color:white;}
 
 /* Grafik */
-.wadah-grafik{background:var(--gelap);border-radius:12px;padding:1rem;margin:0 1rem;position:relative;}
+.wadah-grafik{background:var(--biru-tua);border-radius:12px;padding:1rem;margin:0 1rem;position:relative;}
 .info-grafik{text-align:center;font-size:.9rem;color:var(--abu);margin-bottom:.5rem;}
-.penuh-layar{position:absolute;right:1rem;bottom:1rem;color:var(--abu);font-size:1.2rem;}
 
-/* Tombol Menu Bawah Grafik */
-.menu-cepat{display:grid;grid-template-columns:repeat(5,1fr);gap:.5rem;padding:1.5rem 1rem;}
-.item-menu{text-align:center;}
-.item-menu .ikon{font-size:1.8rem;margin-bottom:.3rem;}
-.item-menu p{font-size:.8rem;color:var(--abu);}
-
-/* Tab Saham/Reksa Dana */
-.tab-bawah{display:flex;justify-content:center;gap:2rem;padding:1rem;background:var(--gelap);margin:0 1rem;border-radius:12px;}
-.tab-pilihan{display:flex;align-items:center;gap:.5rem;padding:.8rem 1.5rem;border-radius:20px;cursor:pointer;}
-.tab-pilihan.aktif{background:var(--biru);color:white;}
-.lihat-semua{text-align:right;padding:0 1rem;color:var(--biru);font-weight:bold;margin-bottom:1rem;}
+/* Form Deposit & Beli Saham */
+.form-section{margin:1.5rem 1rem;background:var(--biru-tua);border-radius:12px;padding:1.2rem;}
+.form-judul{font-weight:bold;margin-bottom:1rem;}
+.input-group{margin-bottom:1rem;}
+.input-group label{display:block;font-size:.9rem;color:var(--abu);margin-bottom:.5rem;}
+.input-group input{width:100%;padding:.7rem;border-radius:8px;border:1px solid #334155;background:var(--bg);color:var(--teks);}
+.btn-aksi{width:100%;padding:.9rem;border-radius:8px;border:none;font-weight:bold;font-size:1rem;cursor:pointer;}
+.btn-deposit-form{background:var(--biru-terang);color:white;margin-bottom:.7rem;}
+.btn-beli{background:var(--hijau);color:white;}
+.hasil-transaksi{margin-top:1rem;font-size:.9rem;color:var(--abu);}
 
 /* Nav Bawah */
-.nav-bawah{position:fixed;bottom:0;left:0;right:0;background:var(--gelap);display:flex;justify-content:space-around;padding:.8rem 0;border-top:1px solid #334155;}
+.nav-bawah{position:fixed;bottom:0;left:0;right:0;background:var(--biru-tua);display:flex;justify-content:space-around;padding:.8rem 0;border-top:1px solid #334155;}
 .nav-item{text-align:center;color:var(--abu);font-size:.75rem;cursor:pointer;}
-.nav-item.aktif{color:var(--biru);font-weight:bold;}
+.nav-item.aktif{color:var(--biru-terang);font-weight:bold;}
 .nav-item span{display:block;font-size:1.3rem;margin-bottom:.2rem;}
 </style>
 </head>
@@ -74,14 +73,14 @@ body{background:var(--bg);color:var(--teks);padding-bottom:90px;}
   <div class="ikon">☰</div>
 </div>
 
-<!-- Kotak Saldo -->
+<!-- Kotak Saldo (Latar Biru) -->
 <div class="kotak-saldo">
   <div class="teks-saldo">
     <p>Total Saham 👁️</p>
-    <div class="total-uang">Rp686 <span class="ubah">-Rp64 (-8,53%)</span></div>
-    <div class="daya-beli">Buying Power <span style="color:var(--abu)">Rp0</span></div>
+    <div class="total-uang" id="totalSaldo">Rp686 <span class="ubah">-Rp64 (-8,53%)</span></div>
+    <div class="daya-beli">Daya Beli: <span id="dayaBeli">Rp0</span></div>
   </div>
-  <button class="btn-deposit">➕ Deposit</button>
+  <button class="btn-deposit" onclick="bukaFormDeposit()">+ Deposit</button>
 </div>
 
 <!-- Tab Menu -->
@@ -91,7 +90,6 @@ body{background:var(--bg);color:var(--teks);padding-bottom:90px;}
   <div class="tab-item">Aset</div>
   <div class="tab-item">Day Trading</div>
   <div class="tab-item">Order</div>
-  <div class="tab-item">SIP</div>
 </div>
 
 <!-- IHSG & Grafik -->
@@ -102,9 +100,9 @@ body{background:var(--bg);color:var(--teks);padding-bottom:90px;}
     <div class="kenaikan">▲ 77,21 (+1,36%)</div>
   </div>
   <div class="pilihan-waktu">
-    <button class="btn-waktu aktif">1D</button>
+    <button class="btn-waktu">1D</button>
     <button class="btn-waktu">1W</button>
-    <button class="btn-waktu">1M</button>
+    <button class="btn-waktu aktif">1M</button>
     <button class="btn-waktu">3M</button>
     <button class="btn-waktu">1Y</button>
     <button class="btn-waktu">5Y</button>
@@ -115,25 +113,38 @@ body{background:var(--bg);color:var(--teks);padding-bottom:90px;}
 <div class="wadah-grafik">
   <div class="info-grafik">H: 5806 &nbsp;&nbsp;|&nbsp;&nbsp; L: 5706</div>
   <canvas id="grafikIHSG" height="220"></canvas>
-  <div class="penuh-layar">⛶</div>
 </div>
 
-<!-- Menu Cepat -->
-<div class="menu-cepat">
-  <div class="item-menu"><div class="ikon">📊</div><p>RunningTrade</p></div>
-  <div class="item-menu"><div class="ikon">👔</div><p>Top Broker</p></div>
-  <div class="item-menu"><div class="ikon">🗂️</div><p>Top Stock</p></div>
-  <div class="item-menu"><div class="ikon">🗓️</div><p>Kalender</p></div>
-  <div class="item-menu"><div class="ikon">🏆</div><p>Leaderboard</p></div>
-</div>
+<!-- Form Deposit & Beli Saham -->
+<div class="form-section" id="formTransaksi">
+  <div class="form-judul">Transaksi</div>
+  
+  <!-- Bagian Deposit -->
+  <div class="input-group">
+    <label>Jumlah Deposit (Rp)</label>
+    <input type="number" id="jumlahDeposit" placeholder="Contoh: 100000">
+  </div>
+  <button class="btn-aksi btn-deposit-form" onclick="prosesDeposit()">Tambah Saldo</button>
 
-<!-- Tab Pilihan -->
-<div class="tab-bawah">
-  <div class="tab-pilihan"><span>🚀</span> e-IPO</div>
-  <div class="tab-pilihan aktif"><span>📊</span> Saham</div>
-  <div class="tab-pilihan"><span>🌱</span> Reksa Dana</div>
+  <hr style="border-color:#334155;margin:1rem 0;">
+
+  <!-- Bagian Beli Saham -->
+  <div class="input-group">
+    <label>Kode Saham</label>
+    <input type="text" id="kodeSaham" value="TLKM" placeholder="Contoh: TLKM">
+  </div>
+  <div class="input-group">
+    <label>Harga per Lembar (Rp)</label>
+    <input type="number" id="hargaSaham" value="3820" placeholder="Contoh: 3820">
+  </div>
+  <div class="input-group">
+    <label>Jumlah Lembar</label>
+    <input type="number" id="jumlahLembar" value="100" placeholder="Minimal 100 lembar">
+  </div>
+  <button class="btn-aksi btn-beli" onclick="prosesBeli()">Beli Saham</button>
+
+  <div class="hasil-transaksi" id="hasilInfo"></div>
 </div>
-<div class="lihat-semua">Lihat Semua ➡</div>
 
 <!-- Nav Bawah -->
 <div class="nav-bawah">
@@ -145,7 +156,10 @@ body{background:var(--bg);color:var(--teks);padding-bottom:90px;}
 </div>
 
 <script>
-// Buat Grafik IHSG
+// Data Saldo Awal
+let saldo = 0;
+
+// Grafik IHSG
 const ctx = document.getElementById('grafikIHSG').getContext('2d');
 new Chart(ctx, {
   type: 'line',
@@ -171,29 +185,53 @@ new Chart(ctx, {
   }
 });
 
-// Fungsi Klik Waktu
+// Fungsi Deposit
+function prosesDeposit(){
+  const jumlah = parseInt(document.getElementById('jumlahDeposit').value);
+  if(isNaN(jumlah) || jumlah <= 0){
+    alert("Masukkan jumlah uang yang benar!");
+    return;
+  }
+  saldo += jumlah;
+  document.getElementById('dayaBeli').textContent = "Rp" + saldo.toLocaleString('id-ID');
+  document.getElementById('hasilInfo').innerHTML = `✅ Berhasil deposit Rp${jumlah.toLocaleString('id-ID')}! Saldo bertambah.`;
+  document.getElementById('jumlahDeposit').value = "";
+}
+
+// Fungsi Beli Saham
+function prosesBeli(){
+  const kode = document.getElementById('kodeSaham').value;
+  const harga = parseInt(document.getElementById('hargaSaham').value);
+  const jumlah = parseInt(document.getElementById('jumlahLembar').value);
+  const totalBayar = harga * jumlah;
+
+  if(!kode || isNaN(harga) || harga <=0 || isNaN(jumlah) || jumlah <100){
+    alert("Isi data dengan benar! Minimal pembelian 100 lembar.");
+    return;
+  }
+  if(totalBayar > saldo){
+    alert("Saldo tidak cukup! Lakukan deposit terlebih dahulu.");
+    return;
+  }
+
+  saldo -= totalBayar;
+  document.getElementById('dayaBeli').textContent = "Rp" + saldo.toLocaleString('id-ID');
+  document.getElementById('hasilInfo').innerHTML = `✅ Berhasil beli ${jumlah} lembar ${kode} @Rp${harga.toLocaleString('id-ID')} <br> Total bayar: Rp${totalBayar.toLocaleString('id-ID')}`;
+}
+
+// Fungsi Klik Tombol Waktu & Tab
 document.querySelectorAll('.btn-waktu').forEach(btn => {
   btn.onclick = () => {
     document.querySelectorAll('.btn-waktu').forEach(b => b.classList.remove('aktif'));
     btn.classList.add('aktif');
   };
 });
-
-// Fungsi Klik Tab
 document.querySelectorAll('.tab-item').forEach(tab => {
   tab.onclick = () => {
     document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('aktif'));
     tab.classList.add('aktif');
   };
 });
-
-document.querySelectorAll('.tab-pilihan').forEach(tab => {
-  tab.onclick = () => {
-    document.querySelectorAll('.tab-pilihan').forEach(t => t.classList.remove('aktif'));
-    tab.classList.add('aktif');
-  };
-});
-
 document.querySelectorAll('.nav-item').forEach(nav => {
   nav.onclick = () => {
     document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('aktif'));
