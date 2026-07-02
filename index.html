@@ -36,8 +36,8 @@ body{background:var(--bg);color:var(--teks);padding-bottom:80px;}
 .tab{font-weight:500;color:var(--abu);padding:.5rem 0;}
 .tab.aktif{color:var(--teks);border-bottom:2px solid var(--hijau);}
 
-/* Grafik */
-.chart-container{padding:1rem;margin:1rem;background:var(--card);border-radius:10px;}
+/* Grafik DIPERPANJANG */
+.chart-container{padding:1rem;margin:1rem;background:var(--card);border-radius:10px;min-height:320px;height:35vh;}
 .chart-judul{margin-bottom:1rem;display:flex;justify-content:space-between;align-items:center;}
 .chart-harga{font-size:1.5rem;font-weight:bold;}
 .chart-naik{color:var(--hijau);font-size:.9rem;}
@@ -118,7 +118,7 @@ body{background:var(--bg);color:var(--teks);padding-bottom:80px;}
     </div>
     <div class="chart-naik" id="persenAset">+3,03% 24J</div>
   </div>
-  <canvas id="grafikHarga" height="200"></canvas>
+  <canvas id="grafikHarga"></canvas>
 </div>
 
 <!-- Daftar Aset -->
@@ -165,44 +165,24 @@ body{background:var(--bg);color:var(--teks);padding-bottom:80px;}
 </div>
 
 <script>
-// Data Harga & Grafik Setiap Aset
 const dataAset = {
-  btc: {
-    nama: "Bitcoin (BTC)",
-    harga: 1090655215,
-    persen: "+3,03%",
-    dataGrafik: [1050, 1062, 1058, 1070, 1082, 1088, 1090]
-  },
-  eth: {
-    nama: "Ethereum (ETH)",
-    harga: 29329903,
-    persen: "+3,05%",
-    dataGrafik: [2750, 2810, 2790, 2850, 2890, 2910, 2930]
-  },
-  bnb: {
-    nama: "BNB",
-    harga: 9947062,
-    persen: "+0,72%",
-    dataGrafik: [9800, 9850, 9820, 9880, 9910, 9930, 9947]
-  }
+  btc: {nama: "Bitcoin (BTC)", harga: 1090655215, persen: "+3,03%", dataGrafik: [1050, 1062, 1058, 1070, 1082, 1088, 1090]},
+  eth: {nama: "Ethereum (ETH)", harga: 29329903, persen: "+3,05%", dataGrafik: [2750, 2810, 2790, 2850, 2890, 2910, 2930]},
+  bnb: {nama: "BNB", harga: 9947062, persen: "+0,72%", dataGrafik: [9800, 9850, 9820, 9880, 9910, 9930, 9947]}
 };
 
 let grafikSaatIni;
 
-// Fungsi Pilih & Ganti Aset
 function pilihAset(kodeAset) {
   const aset = dataAset[kodeAset];
   const ctx = document.getElementById('grafikHarga').getContext('2d');
 
-  // Perbarui Tampilan
   document.getElementById('namaAset').textContent = aset.nama;
   document.getElementById('hargaAset').textContent = "Rp " + aset.harga.toLocaleString('id-ID');
   document.getElementById('persenAset').textContent = aset.persen + " 24J";
 
-  // Hapus grafik lama
   if (grafikSaatIni) grafikSaatIni.destroy();
 
-  // Buat grafik baru
   grafikSaatIni = new Chart(ctx, {
     type: 'line',
     data: {
@@ -220,6 +200,7 @@ function pilihAset(kodeAset) {
     options: {
       responsive: true,
       maintainAspectRatio: false,
+      aspectRatio: 16/9,
       plugins: {legend:{display:false}},
       scales: {
         x:{grid:{color:'#333'},ticks:{color:'#9CA3AF'}},
@@ -229,7 +210,6 @@ function pilihAset(kodeAset) {
   });
 }
 
-// Tampilkan BTC saat pertama kali dibuka
 document.addEventListener('DOMContentLoaded', () => {
   pilihAset('btc');
 });
