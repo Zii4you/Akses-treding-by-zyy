@@ -18,56 +18,56 @@
 }
 body{background:var(--bg);color:var(--teks);padding-bottom:90px;}
 
-/* Header Atas */
+/* Header Atas - Pencarian Diperkecil */
 .header-atas{display:flex;align-items:center;gap:1rem;padding:1rem;}
-.cari{flex:1;background:var(--biru-kotak);border-radius:12px;padding:.8rem 1rem;color:var(--teks);border:none;display:flex;align-items:center;gap:.5rem;}
+.cari{flex:1;background:var(--biru-kotak);border-radius:12px;padding:.6rem 1rem;color:var(--teks);border:none;display:flex;align-items:center;gap:.5rem;font-size:.95rem;max-width:75%;}
 .ikon{font-size:1.4rem;padding:.5rem;}
 
 /* Kotak Saldo */
 .kotak-saldo{background:var(--biru-kotak);margin:0 1rem 1.5rem;border-radius:12px;padding:1.2rem;display:flex;justify-content:space-between;align-items:center;}
 .teks-saldo p{font-size:.9rem;color:var(--abu);margin-bottom:.3rem;}
-.total-uang{font-size:1.5rem;font-weight:bold;}
+.total-uang{font-size:1.8rem;font-weight:bold;}
 .ubah{color:var(--merah);font-size:.9rem;margin-left:.5rem;}
-.daya-beli{font-size:.9rem;color:var(--abu);margin-top:.5rem;}
-.btn-deposit{background:var(--biru-terang);color:white;border:none;padding:.5rem 1rem;border-radius:8px;font-weight:bold;font-size:.95rem;display:flex;align-items:center;gap:.3rem;cursor:pointer;}
+.daya-beli{font-size:1rem;color:var(--abu);margin-top:.5rem;}
+.btn-deposit{background:var(--biru-terang);color:white;border:none;padding:.6rem 1.2rem;border-radius:10px;font-weight:bold;font-size:1rem;display:flex;align-items:center;gap:.3rem;cursor:pointer;}
 
 /* Tab Menu Atas */
 .tab-atas{display:flex;gap:2rem;padding:0 1rem 1rem;overflow-x:auto;}
-.tab-item{color:var(--abu);padding:.5rem 0;white-space:nowrap;cursor:pointer;}
+.tab-item{color:var(--abu);padding:.5rem 0;white-space:nowrap;cursor:pointer;font-size:1.1rem;}
 .tab-item.aktif{color:var(--teks);border-bottom:2px solid var(--biru-terang);font-weight:bold;}
 
 /* IHSG & Waktu */
 .ihsg{padding:0 1rem 1rem;}
 .judul-ihsg{display:flex;align-items:center;gap:.5rem;margin-bottom:1rem;}
-.angka-ihsg{font-size:1.5rem;font-weight:bold;}
-.kenaikan{color:var(--hijau);font-size:1rem;}
+.angka-ihsg{font-size:1.8rem;font-weight:bold;}
+.kenaikan{color:var(--hijau);font-size:1.1rem;}
 .pilihan-waktu{display:flex;gap:.5rem;margin-bottom:1rem;}
-.btn-waktu{padding:.5rem 1rem;border-radius:6px;border:none;background:transparent;color:var(--abu);cursor:pointer;}
+.btn-waktu{padding:.5rem 1rem;border-radius:8px;border:none;background:transparent;color:var(--abu);cursor:pointer;font-size:1rem;}
 .btn-waktu.aktif{background:var(--biru-terang);color:white;}
 
-/* Grafik (UKURAN DIPASANG PAS) */
-.wadah-grafik{background:var(--biru-kotak);border-radius:12px;padding:1rem;margin:0 1rem;}
-.info-grafik{text-align:center;font-size:.9rem;color:var(--abu);margin-bottom:.5rem;}
-#grafikIHSG{height:240px !important;width:100% !important;}
+/* Grafik Ukuran Pas */
+.wadah-grafik{background:var(--biru-kotak);border-radius:12px;padding:1.2rem;margin:0 1rem;}
+.info-grafik{text-align:center;font-size:1rem;color:var(--abu);margin-bottom:.8rem;}
+#grafikIHSG{height:260px !important;width:100% !important;}
 
 /* Form Transaksi */
 .form-transaksi{margin:1.5rem 1rem;background:var(--biru-kotak);border-radius:12px;padding:1.2rem;}
-.judul-form{font-weight:bold;margin-bottom:1rem;}
+.judul-form{font-weight:bold;margin-bottom:1rem;font-size:1.1rem;}
 .input{width:100%;padding:.8rem;border-radius:8px;border:1px solid #334155;background:var(--bg);color:var(--teks);margin-bottom:1rem;font-size:1rem;}
-.tombol-biru{width:100%;padding:.9rem;border-radius:8px;border:none;background:var(--biru-terang);color:white;font-weight:bold;cursor:pointer;margin-bottom:.7rem;}
-.tombol-hijau{width:100%;padding:.9rem;border-radius:8px;border:none;background:var(--hijau);color:white;font-weight:bold;cursor:pointer;}
-.pesan{margin-top:1rem;font-size:.9rem;}
+.tombol-biru{width:100%;padding:.9rem;border-radius:8px;border:none;background:var(--biru-terang);color:white;font-weight:bold;cursor:pointer;margin-bottom:.7rem;font-size:1rem;}
+.tombol-hijau{width:100%;padding:.9rem;border-radius:8px;border:none;background:var(--hijau);color:white;font-weight:bold;cursor:pointer;font-size:1rem;}
+.pesan{margin-top:1rem;font-size:.95rem;}
 
 /* Nav Bawah */
 .nav-bawah{position:fixed;bottom:0;left:0;right:0;background:var(--biru-kotak);display:flex;justify-content:space-around;padding:.8rem 0;border-top:1px solid #334155;}
-.nav-item{text-align:center;color:var(--abu);font-size:.75rem;cursor:pointer;}
+.nav-item{text-align:center;color:var(--abu);font-size:.8rem;cursor:pointer;}
 .nav-item.aktif{color:var(--biru-terang);font-weight:bold;}
-.nav-item span{display:block;font-size:1.3rem;margin-bottom:.2rem;}
+.nav-item span{display:block;font-size:1.4rem;margin-bottom:.2rem;}
 </style>
 </head>
 <body>
 
-<!-- Header Atas -->
+<!-- Header Atas (Pencarian Diperkecil) -->
 <div class="header-atas">
   <div class="cari">
     <span>📊</span>
@@ -83,7 +83,7 @@ body{background:var(--bg);color:var(--teks);padding-bottom:90px;}
   <div class="teks-saldo">
     <p>Total Saham 👁️</p>
     <div class="total-uang">Rp686 <span class="ubah">-Rp64 (-8,53%)</span></div>
-    <div class="daya-beli">Daya Beli: <span id="txtDayaBeli">Rp0</span></div>
+    <div class="daya-beli">Daya Beli: <span id="txtDayaBeli">Rp686.544</span></div>
   </div>
   <button class="btn-deposit">+ Deposit</button>
 </div>
@@ -150,9 +150,11 @@ body{background:var(--bg);color:var(--teks);padding-bottom:90px;}
 </div>
 
 <script>
-let saldo = 0;
+// Saldo awal dengan format yang benar
+let saldo = 686544;
+document.getElementById('txtDayaBeli').textContent = "Rp" + saldo.toLocaleString('id-ID');
 
-// Grafik dengan ukuran yang pas
+// Grafik
 const ctx = document.getElementById('grafikIHSG').getContext('2d');
 new Chart(ctx, {
   type: 'line',
@@ -170,8 +172,8 @@ new Chart(ctx, {
   },
   options: {
     responsive: true,
-    maintainAspectRatio: true, // KUNCI: agar grafik tidak melar
-    aspectRatio: 16/9, // Rasio lebar : tinggi pas
+    maintainAspectRatio: true,
+    aspectRatio: 16/9,
     plugins: {legend:{display:false}},
     scales: {
       x:{grid:{display:false},ticks:{color:'#94A3B8'}},
@@ -180,18 +182,21 @@ new Chart(ctx, {
   }
 });
 
-// Fungsi Deposit
+// Fungsi Tambah Saldo (Format Otomatis Rp)
 function tambahSaldo(){
   const jumlah = parseInt(document.getElementById('inputDeposit').value);
   const pesan = document.getElementById('pesan');
+
   if(isNaN(jumlah) || jumlah <= 0){
-    pesan.innerHTML = "⚠️ Masukkan jumlah yang benar!";
+    pesan.innerHTML = "⚠️ Masukkan jumlah uang yang benar!";
     pesan.style.color = '#EF4444';
     return;
   }
+
   saldo += jumlah;
+  // Tampilkan dengan format Rp dan pemisah ribuan
   document.getElementById('txtDayaBeli').textContent = "Rp" + saldo.toLocaleString('id-ID');
-  pesan.innerHTML = "✅ Berhasil deposit Rp" + jumlah.toLocaleString('id-ID');
+  pesan.innerHTML = "✅ Berhasil deposit Rp" + jumlah.toLocaleString('id-ID') + "!<br>Saldo sekarang: Rp" + saldo.toLocaleString('id-ID');
   pesan.style.color = '#22C55E';
   document.getElementById('inputDeposit').value = "";
 }
@@ -203,19 +208,21 @@ function beliSaham(){
   const jumlah = parseInt(document.getElementById('jumlahLembar').value);
   const total = harga * jumlah;
   const pesan = document.getElementById('pesan');
+
   if(!kode || isNaN(harga) || harga <=0 || isNaN(jumlah) || jumlah < 100){
-    pesan.innerHTML = "⚠️ Isi data benar! Minimal 100 lembar.";
+    pesan.innerHTML = "⚠️ Isi data dengan benar! Minimal beli 100 lembar.";
     pesan.style.color = '#EF4444';
     return;
   }
   if(total > saldo){
-    pesan.innerHTML = "⚠️ Saldo kurang! Butuh Rp" + total.toLocaleString('id-ID');
+    pesan.innerHTML = "⚠️ Saldo tidak cukup! Butuh Rp" + total.toLocaleString('id-ID');
     pesan.style.color = '#EF4444';
     return;
   }
+
   saldo -= total;
   document.getElementById('txtDayaBeli').textContent = "Rp" + saldo.toLocaleString('id-ID');
-  pesan.innerHTML = "✅ Berhasil beli " + jumlah + " lembar " + kode;
+  pesan.innerHTML = "✅ Berhasil beli " + jumlah + " lembar " + kode + "!<br>Total bayar: Rp" + total.toLocaleString('id-ID') + "<br>Sisa saldo: Rp" + saldo.toLocaleString('id-ID');
   pesan.style.color = '#22C55E';
 }
 
