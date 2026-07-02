@@ -7,7 +7,15 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif;}
-:root{--bg:#121212;--biru-kotak:#162A46;--biru-terang:#3B82F6;--hijau:#22C55E;--merah:#EF4444;--teks:#FFFFFF;--abu:#94A3B8;}
+:root{
+  --bg:#121212;
+  --biru-kotak:#162A46;
+  --biru-terang:#3B82F6;
+  --hijau:#22C55E;
+  --merah:#EF4444;
+  --teks:#FFFFFF;
+  --abu:#94A3B8;
+}
 body{background:var(--bg);color:var(--teks);padding-bottom:90px;}
 
 /* Header Atas */
@@ -15,13 +23,12 @@ body{background:var(--bg);color:var(--teks);padding-bottom:90px;}
 .cari{flex:1;background:var(--biru-kotak);border-radius:12px;padding:.8rem 1rem;color:var(--teks);border:none;display:flex;align-items:center;gap:.5rem;}
 .ikon{font-size:1.4rem;padding:.5rem;}
 
-/* Kotak Saldo (Latar Biru) */
+/* Kotak Saldo */
 .kotak-saldo{background:var(--biru-kotak);margin:0 1rem 1.5rem;border-radius:12px;padding:1.2rem;display:flex;justify-content:space-between;align-items:center;}
 .teks-saldo p{font-size:.9rem;color:var(--abu);margin-bottom:.3rem;}
 .total-uang{font-size:1.5rem;font-weight:bold;}
 .ubah{color:var(--merah);font-size:.9rem;margin-left:.5rem;}
 .daya-beli{font-size:.9rem;color:var(--abu);margin-top:.5rem;}
-/* Tombol Deposit Diperkecil */
 .btn-deposit{background:var(--biru-terang);color:white;border:none;padding:.5rem 1rem;border-radius:8px;font-weight:bold;font-size:.95rem;display:flex;align-items:center;gap:.3rem;cursor:pointer;}
 
 /* Tab Menu Atas */
@@ -30,7 +37,7 @@ body{background:var(--bg);color:var(--teks);padding-bottom:90px;}
 .tab-item.aktif{color:var(--teks);border-bottom:2px solid var(--biru-terang);font-weight:bold;}
 
 /* IHSG & Waktu */
-.ihsg{padding:1rem;}
+.ihsg{padding:0 1rem 1rem;}
 .judul-ihsg{display:flex;align-items:center;gap:.5rem;margin-bottom:1rem;}
 .angka-ihsg{font-size:1.5rem;font-weight:bold;}
 .kenaikan{color:var(--hijau);font-size:1rem;}
@@ -77,7 +84,7 @@ body{background:var(--bg);color:var(--teks);padding-bottom:90px;}
     <div class="total-uang">Rp686 <span class="ubah">-Rp64 (-8,53%)</span></div>
     <div class="daya-beli">Daya Beli: <span id="txtDayaBeli">Rp0</span></div>
   </div>
-  <button class="btn-deposit" onclick="bukaForm()">+ Deposit</button>
+  <button class="btn-deposit">+ Deposit</button>
 </div>
 
 <!-- Tab Menu -->
@@ -107,14 +114,14 @@ body{background:var(--bg);color:var(--teks);padding-bottom:90px;}
   </div>
 </div>
 
-<!-- Grafik -->
+<!-- Grafik (Sudah Diperbaiki) -->
 <div class="wadah-grafik">
   <div class="info-grafik">H: 5806 &nbsp;&nbsp;|&nbsp;&nbsp; L: 5706</div>
   <canvas id="grafikIHSG" height="220"></canvas>
 </div>
 
-<!-- Form Deposit & Beli Saham -->
-<div class="form-transaksi" id="formTransaksi">
+<!-- Form Transaksi -->
+<div class="form-transaksi">
   <div class="judul-form">Lakukan Transaksi</div>
 
   <!-- Deposit -->
@@ -142,10 +149,10 @@ body{background:var(--bg);color:var(--teks);padding-bottom:90px;}
 </div>
 
 <script>
-// Variabel Saldo (disimpan di memori)
+// Variabel Saldo
 let saldo = 0;
 
-// Grafik IHSG
+// Grafik IHSG (Sudah Diperbaiki)
 const ctx = document.getElementById('grafikIHSG').getContext('2d');
 new Chart(ctx, {
   type: 'line',
@@ -163,6 +170,7 @@ new Chart(ctx, {
   },
   options: {
     responsive: true,
+    maintainAspectRatio: false,
     plugins: {legend:{display:false}},
     scales: {
       x:{grid:{display:false},ticks:{color:'#94A3B8'}},
@@ -178,14 +186,14 @@ function tambahSaldo(){
 
   if(isNaN(jumlah) || jumlah <= 0){
     pesan.innerHTML = "⚠️ Masukkan jumlah uang yang benar!";
-    pesan.style.color = var(--merah);
+    pesan.style.color = '#EF4444';
     return;
   }
 
   saldo += jumlah;
   document.getElementById('txtDayaBeli').textContent = "Rp" + saldo.toLocaleString('id-ID');
-  pesan.innerHTML = "✅ Berhasil deposit Rp" + jumlah.toLocaleString('id-ID') + "! Saldo sekarang: Rp" + saldo.toLocaleString('id-ID');
-  pesan.style.color = var(--hijau);
+  pesan.innerHTML = "✅ Berhasil deposit Rp" + jumlah.toLocaleString('id-ID') + "!";
+  pesan.style.color = '#22C55E';
   document.getElementById('inputDeposit').value = "";
 }
 
@@ -197,26 +205,24 @@ function beliSaham(){
   const total = harga * jumlah;
   const pesan = document.getElementById('pesan');
 
-  // Validasi
   if(!kode || isNaN(harga) || harga <=0 || isNaN(jumlah) || jumlah < 100){
-    pesan.innerHTML = "⚠️ Isi data dengan benar! Minimal beli 100 lembar.";
-    pesan.style.color = var(--merah);
+    pesan.innerHTML = "⚠️ Isi data benar! Minimal beli 100 lembar.";
+    pesan.style.color = '#EF4444';
     return;
   }
   if(total > saldo){
-    pesan.innerHTML = "⚠️ Saldo tidak cukup! Silakan deposit dulu. Butuh Rp" + total.toLocaleString('id-ID');
-    pesan.style.color = var(--merah);
+    pesan.innerHTML = "⚠️ Saldo kurang! Butuh Rp" + total.toLocaleString('id-ID');
+    pesan.style.color = '#EF4444';
     return;
   }
 
-  // Kurangi saldo
   saldo -= total;
   document.getElementById('txtDayaBeli').textContent = "Rp" + saldo.toLocaleString('id-ID');
-  pesan.innerHTML = "✅ Berhasil beli " + jumlah + " lembar " + kode + "!<br>Total bayar: Rp" + total.toLocaleString('id-ID') + "<br>Sisa saldo: Rp" + saldo.toLocaleString('id-ID');
-  pesan.style.color = var(--hijau);
+  pesan.innerHTML = "✅ Berhasil beli " + jumlah + " lembar " + kode + "! Sisa saldo: Rp" + saldo.toLocaleString('id-ID');
+  pesan.style.color = '#22C55E';
 }
 
-// Fungsi Tab & Tombol
+// Fungsi Tab
 document.querySelectorAll('.btn-waktu').forEach(b => b.onclick = function(){
   document.querySelectorAll('.btn-waktu').forEach(x => x.classList.remove('aktif'));
   this.classList.add('aktif');
