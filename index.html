@@ -3,258 +3,248 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TradingView - Pasar Keuangan</title>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<title>Portofolio Kripto</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;}
+*{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;}
 :root{
   --bg:#000000;
-  --gelap:#1A1A1A;
-  --gelap-lembut:#272727;
-  --hijau:#29C885;
-  --merah:#F23645;
+  --gelap:#1A1F2E;
   --biru:#3B82F6;
+  --ungu:#8B5CF6;
+  --hijau:#22C55E;
+  --merah:#EF4444;
   --teks:#FFFFFF;
-  --abu:#888888;
-  --abu-muda:#B0B0B0;
+  --abu:#94A3B8;
+  --garis:#2D3748;
 }
-body{background:var(--bg);color:var(--teks);padding-bottom:70px;}
+body{background:var(--bg);color:var(--teks);padding-bottom:80px;}
 
-/* Tampilan Utama & Grafik */
-#halamanUtama{display:block;}
-#halamanGrafik{display:none;}
+/* Header Pencarian */
+.header-atas{padding:1rem;display:flex;align-items:center;gap:1rem;}
+.cari{flex:1;background:var(--gelap);border-radius:12px;padding:.9rem 1rem;display:flex;align-items:center;gap:.7rem;}
+.ikon-atas{font-size:1.5rem;padding:.5rem;cursor:pointer;}
 
-/* Header Atas */
-.header-atas{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.2rem;position:sticky;top:0;background:var(--bg);z-index:10;}
-.waktu{background:rgba(41,200,133,0.2);color:var(--hijau);padding:.4rem .8rem;border-radius:20px;font-size:.9rem;font-weight:500;}
-.logo{font-weight:bold;font-size:1.4rem;color:var(--abu-muda);}
-.tombol-kembali{font-size:1.5rem;color:var(--abu);cursor:pointer;}
+/* Kotak Saldo */
+.kotak-saldo{background:var(--gelap);border-radius:16px;margin:0 1rem 1.5rem;padding:1.3rem;}
+.baris-atas{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1rem;}
+.saldo-kiri p{font-size:.9rem;color:var(--abu);margin-bottom:.3rem;}
+.saldo-kiri .angka{font-size:1.6rem;font-weight:bold;}
+.saldo-kiri .perubahan{font-size:.9rem;color:var(--merah);}
+.saldo-kanan p{font-size:.9rem;color:var(--abu);margin-bottom:.3rem;}
+.saldo-kanan .angka{font-size:1.2rem;font-weight:500;}
+.baris-tombol{display:flex;gap:.8rem;}
+.tombol-aksi{flex:1;padding:.7rem;border-radius:10px;border:none;background:var(--garis);color:var(--teks);font-size:.9rem;display:flex;align-items:center;justify-content:center;gap:.5rem;cursor:pointer;}
+.tombol-deposit{flex:1.2;background:var(--biru);border:none;}
 
-/* Daftar Instrumen */
-.daftar{padding:0 1.2rem;}
-.item{display:flex;align-items:center;justify-content:space-between;padding:1rem 0;border-bottom:1px solid var(--gelap);cursor:pointer;}
-.kiri{display:flex;align-items:center;gap:.8rem;}
-.ikon{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:1rem;flex-shrink:0;}
-.info h3{font-size:1.2rem;margin-bottom:.2rem;}
-.info p{font-size:.9rem;color:var(--abu);}
-.kanan{text-align:right;}
-.harga{font-size:1.2rem;font-weight:500;margin-bottom:.2rem;}
-.perubahan{font-size:1rem;}
+/* Tab Menu */
+.tab-atas{display:flex;gap:2rem;padding:0 1rem 1.2rem;overflow-x:auto;}
+.tab-item{color:var(--abu);padding:.5rem 0;white-space:nowrap;cursor:pointer;font-size:1.1rem;}
+.tab-item.aktif{color:var(--teks);border-bottom:2px solid var(--biru);font-weight:bold;}
+
+/* Judul Bagian */
+.judul-bagian{font-size:1.3rem;font-weight:bold;margin:1rem 1.2rem;}
+
+/* Koin Populer */
+.koin-banyak-dibeli{display:flex;gap:1rem;padding:0 1rem;overflow-x:auto;margin-bottom:2rem;}
+.kartu-koin{min-width:160px;background:var(--gelap);border-radius:14px;padding:1rem;position:relative;cursor:pointer;}
+.urutan{position:absolute;top:.5rem;right:.5rem;background:rgba(255,255,255,0.1);padding:.3rem .6rem;border-radius:10px;font-size:.8rem;}
+.logo-koin{width:36px;height:36px;border-radius:50%;margin-bottom:.8rem;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:1.2rem;}
+.nama-koin{font-weight:bold;margin-bottom:.3rem;}
+.harga-koin{font-size:.9rem;color:var(--abu);margin-bottom:.3rem;}
+.ubah-koin{font-size:.9rem;}
 .naik{color:var(--hijau);}
 .turun{color:var(--merah);}
 
-/* Judul Kategori */
-.kategori{font-size:1.1rem;color:var(--abu-muda);font-weight:500;margin:1.5rem 0 .8rem;}
+/* Menu Kategori */
+.menu-kategori{display:flex;justify-content:space-around;margin:0 1rem 2rem;}
+.menu-item{text-align:center;cursor:pointer;}
+.menu-item span{display:block;font-size:1.8rem;margin-bottom:.5rem;}
+.menu-item p{font-size:.85rem;color:var(--abu);}
 
-/* Halaman Grafik */
-.judul-grafik{padding:1.5rem 1.2rem;}
-.nama-instrumen{font-size:1.5rem;font-weight:bold;margin-bottom:.5rem;}
-.sub-instrumen{font-size:1rem;color:var(--abu);}
-.wadah-grafik{padding:0 1.2rem;}
-#grafikUtama{height:320px !important;width:100% !important;}
-.info-grafik{display:flex;justify-content:space-between;padding:1rem 1.2rem;color:var(--abu);font-size:.9rem;}
+/* Aset Favorit */
+.aset-favorit{display:flex;gap:1rem;padding:0 1rem;overflow-x:auto;margin-bottom:2rem;}
+.kartu-favorit{min-width:220px;background:var(--gelap);border-radius:14px;padding:1.2rem;cursor:pointer;}
+.logo-fav{width:40px;height:40px;border-radius:50%;margin-bottom:1rem;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:1.3rem;}
+.nama-fav{font-weight:bold;font-size:1.2rem;margin-bottom:.5rem;}
+.harga-fav{font-size:1rem;color:var(--abu);margin-bottom:.5rem;}
+.ubah-fav{font-size:1rem;}
 
-/* Popup */
-.popup{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:var(--gelap);border-radius:16px;padding:1.5rem;z-index:999;width:85%;max-width:350px;display:none;}
-.popup-teks{font-size:1.2rem;margin-bottom:1.5rem;}
-.popup-tombol{text-align:right;}
-.popup-tutup{color:var(--biru);font-size:1.1rem;font-weight:500;cursor:pointer;}
+/* Trending */
+.trending{padding:0 1rem;}
+.judul-trending{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;}
+.lihat-semua{color:var(--biru);font-size:.9rem;cursor:pointer;}
+.tab-trending{display:flex;gap:2rem;margin-bottom:1rem;}
+.tab-tren{color:var(--abu);font-size:1.1rem;cursor:pointer;}
+.tab-tren.aktif{color:var(--teks);font-weight:bold;border-bottom:2px solid var(--biru);padding-bottom:.3rem;}
+.tombol-trade{position:fixed;right:1.5rem;bottom:90px;background:var(--ungu);color:white;border:none;padding:1rem 1.5rem;border-radius:14px;font-weight:bold;font-size:1.1rem;display:flex;align-items:center;gap:.5rem;cursor:pointer;}
 
-/* Navigasi Bawah */
-.nav-bawah{position:fixed;bottom:0;left:0;right:0;background:var(--bg);border-top:1px solid var(--gelap);display:flex;justify-content:space-around;padding:.8rem 0;}
-.nav-item{text-align:center;color:var(--abu);font-size:.8rem;cursor:pointer;}
-.nav-item.aktif{color:var(--teks);font-weight:500;}
-.nav-item span{display:block;font-size:1.5rem;margin-bottom:.2rem;}
+/* Nav Bawah */
+.nav-bawah{position:fixed;bottom:0;left:0;right:0;background:var(--gelap);display:flex;justify-content:space-around;padding:.8rem 0;border-top:1px solid var(--garis);}
+.nav-item{text-align:center;color:var(--abu);font-size:.75rem;cursor:pointer;}
+.nav-item.aktif{color:var(--biru);font-weight:bold;}
+.nav-item span{display:block;font-size:1.4rem;margin-bottom:.2rem;}
 </style>
 </head>
 <body>
 
-<!-- Halaman Utama -->
-<div id="halamanUtama">
-  <div class="header-atas">
-    <div class="waktu">21.54</div>
-    <div class="logo">TradingView</div>
-    <div style="font-size:1.8rem;font-weight:300;">+</div>
+<!-- Header Atas -->
+<div class="header-atas">
+  <div class="cari">
+    <span>₿</span>
+    <span>Kripto</span>
+    <span style="margin-left:auto;">🔍</span>
   </div>
+  <div class="ikon-atas">🔔</div>
+  <div class="ikon-atas">👤☰</div>
+</div>
 
-  <div class="daftar">
-    <!-- Indeks -->
-    <div class="item" onclick="bukaGrafik('COMPOSITE', 'Indeks Harga Saham Gabungan', 5744, 5790, 5700)">
-      <div class="kiri">
-        <div class="ikon" style="background:#2A2A2A;">🏁</div>
-        <div class="info">
-          <h3>COMPOSITE <span style="color:var(--abu);font-weight:normal;">– D</span></h3>
-          <p>Indeks Harga Saham Gabungan</p>
-        </div>
-      </div>
-      <div class="kanan">
-        <div class="harga">5.744,5560</div>
-        <div class="perubahan naik">+49,4400 +0,87%</div>
-      </div>
+<!-- Kotak Saldo -->
+<div class="kotak-saldo">
+  <div class="baris-atas">
+    <div class="saldo-kiri">
+      <p>Total Investasi 👁️</p>
+      <div class="angka">Rp531,8 <span class="perubahan">(-0,56%)</span></div>
     </div>
-
-    <div class="item" onclick="bukaGrafik('IDX30', 'IDX 30 Index', 320, 325, 315)">
-      <div class="kiri">
-        <div class="ikon" style="background:#B72424;">30</div>
-        <div class="info">
-          <h3>IDX30 <span style="color:var(--abu);font-weight:normal;">– D</span></h3>
-          <p>IDX 30 Index</p>
-        </div>
-      </div>
-      <div class="kanan">
-        <div class="harga">320,5050</div>
-        <div class="perubahan naik">+4,9250 +1,56%</div>
-      </div>
+    <div class="saldo-kanan">
+      <p>Cash</p>
+      <div class="angka">Rp0,46</div>
     </div>
-
-    <div class="item" onclick="bukaGrafik('IDXBUMN20', 'IDX BUMN20 Index', 287, 292, 282)">
-      <div class="kiri">
-        <div class="ikon" style="background:#165DFF;">🇮🇩</div>
-        <div class="info">
-          <h3>IDXBUMN20 <span style="color:var(--abu);font-weight:normal;">– D</span></h3>
-          <p>IDX BUMN20 Index</p>
-        </div>
-      </div>
-      <div class="kanan">
-        <div class="harga">287,9110</div>
-        <div class="perubahan naik">+4,2430 +1,50%</div>
-      </div>
-    </div>
-
-    <!-- Saham -->
-    <div class="kategori">Saham (Stock)</div>
-    <div class="item" onclick="bukaGrafik('TLKM', 'PT Telkom Indonesia (Persero) Tbk', 2450, 2480, 2420)">
-      <div class="kiri">
-        <div class="ikon" style="background:#E6212A;">📊</div>
-        <div class="info">
-          <h3>TLKM <span style="color:var(--abu);font-weight:normal;">– D</span></h3>
-          <p>PT Telkom Indonesia (Persero) Tbk</p>
-        </div>
-      </div>
-      <div class="kanan">
-        <div class="harga">2.450,0</div>
-        <div class="perubahan naik">+10,0 +0,41%</div>
-      </div>
-    </div>
-
-    <!-- Forex -->
-    <div class="kategori">Forex</div>
-    <div class="item" onclick="bukaGrafik('EURUSD', 'Euro/Dollar AS', 1.1440, 1.1480, 1.1400)">
-      <div class="kiri">
-        <div class="ikon" style="background:linear-gradient(90deg,#003399 50%,#FFFFFF 50%);">🇪🇺🇺🇸</div>
-        <div class="info">
-          <h3>EURUSD</h3>
-          <p>Euro/Dollar AS</p>
-        </div>
-      </div>
-      <div class="kanan">
-        <div class="harga">1,1440²</div>
-        <div class="perubahan naik">+0,00631 +0,55%</div>
-      </div>
-    </div>
+  </div>
+  <div class="baris-tombol">
+    <button class="tombol-aksi">↩ Kirim</button>
+    <button class="tombol-aksi">↪ Terima</button>
+    <button class="tombol-aksi tombol-deposit" onclick="tambahSaldo()">+ Deposit</button>
   </div>
 </div>
 
-<!-- Halaman Grafik -->
-<div id="halamanGrafik">
-  <div class="header-atas">
-    <div class="tombol-kembali" onclick="kembaliKeDaftar()">←</div>
-    <div class="logo">Chart</div>
-    <div style="width:24px;"></div>
-  </div>
+<!-- Tab Menu -->
+<div class="tab-atas">
+  <div class="tab-item aktif">Jelajahi</div>
+  <div class="tab-item">Watchlist</div>
+  <div class="tab-item">Aset</div>
+  <div class="tab-item">Posisi Terbuka</div>
+  <div class="tab-item">Open Order</div>
+</div>
 
-  <div class="judul-grafik">
-    <div class="nama-instrumen" id="namaInstrumen">TLKM</div>
-    <div class="sub-instrumen" id="subInstrumen">PT Telkom Indonesia (Persero) Tbk</div>
+<!-- Koin Populer -->
+<div class="judul-bagian">Lagi Banyak Dibeli, Nih!</div>
+<div class="koin-banyak-dibeli">
+  <div class="kartu-koin">
+    <div class="urutan" style="background:#FBBF24;color:black;">1</div>
+    <div class="logo-koin" style="background:#3B82F6;">A</div>
+    <div class="nama-koin">POND /IDR</div>
+    <div class="harga-koin">Rp23,68344</div>
+    <div class="ubah-koin turun">▼ 3,22%</div>
   </div>
-
-  <div class="wadah-grafik">
-    <canvas id="grafikUtama"></canvas>
+  <div class="kartu-koin">
+    <div class="urutan">2</div>
+    <div class="logo-koin" style="background:#EF4444;">🤝</div>
+    <div class="nama-koin">IKA /IDR</div>
+    <div class="harga-koin">Rp65,326822</div>
+    <div class="ubah-koin naik">▲ 106,86%</div>
   </div>
-
-  <div class="info-grafik">
-    <div>Tertinggi: <span id="hargaTertinggi">2480</span></div>
-    <div>Terendah: <span id="hargaTerendah">2420</span></div>
+  <div class="kartu-koin">
+    <div class="urutan" style="background:#FBBF24;color:black;">3</div>
+    <div class="logo-koin" style="background:#8B5CF6;">👽</div>
+    <div class="nama-koin">SKYAI /IDR</div>
+    <div class="harga-koin">Rp1.452,8</div>
+    <div class="ubah-koin turun">▼ 20,83%</div>
   </div>
 </div>
 
-<!-- Popup -->
-<div class="popup" id="popupBuka">
-  <div class="popup-teks">Membuka grafik instrumen...</div>
-  <div class="popup-tombol">
-    <span class="popup-tutup" onclick="tutupPopup()">Tutup</span>
+<!-- Menu Kategori -->
+<div class="menu-kategori">
+  <div class="menu-item"><span>🔭</span><p>Market</p></div>
+  <div class="menu-item"><span>🖥️</span><p>Sektor</p></div>
+  <div class="menu-item aktif"><span>🔍</span><p>Blue Chip</p></div>
+  <div class="menu-item"><span>📈</span><p>Futures</p></div>
+  <div class="menu-item"><span>📄</span><p>Feed</p></div>
+</div>
+
+<!-- Aset Favorit -->
+<div class="judul-bagian">Aset Kripto Favorit</div>
+<div class="aset-favorit">
+  <div class="kartu-favorit">
+    <div class="logo-fav" style="background:#F7931A;">₿</div>
+    <div class="nama-fav">BTC/IDR</div>
+    <div class="harga-fav">Rp1.106.931.000</div>
+    <div class="ubah-fav naik">▲ 2,79%</div>
+  </div>
+  <div class="kartu-favorit">
+    <div class="logo-fav" style="background:#627EEA;">Ξ</div>
+    <div class="nama-fav">ETH/IDR</div>
+    <div class="harga-fav">Rp30.525.000</div>
+    <div class="ubah-fav naik">▲ 5,17%</div>
+  </div>
+  <div class="kartu-favorit">
+    <div class="logo-fav" style="background:#00FFBD;">◎</div>
+    <div class="nama-fav">SOL/IDR</div>
+    <div class="harga-fav">Rp1.447.400</div>
+    <div class="ubah-fav naik">▲ 4,35%</div>
   </div>
 </div>
 
-<!-- Navigasi Bawah -->
+<!-- Trending -->
+<div class="trending">
+  <div class="judul-trending">
+    <div class="judul-bagian" style="margin:0;">Trending</div>
+    <div class="lihat-semua">Lihat Semua</div>
+  </div>
+  <div class="tab-trending">
+    <div class="tab-tren aktif">Spot</div>
+    <div class="tab-tren">Futures</div>
+  </div>
+</div>
+
+<!-- Tombol Trade -->
+<button class="tombol-trade" onclick="bukaTrade()">🔄 Trade</button>
+
+<!-- Nav Bawah -->
 <div class="nav-bawah">
-  <div class="nav-item aktif"><span>📋</span>Daftar Pantau</div>
-  <div class="nav-item"><span>📊</span>Chart</div>
-  <div class="nav-item"><span>🧭</span>Jelajahi</div>
-  <div class="nav-item"><span>👥</span>Komunitas</div>
-  <div class="nav-item"><span>☰</span>Menu</div>
+  <div class="nav-item"><span>🏠</span>Beranda</div>
+  <div class="nav-item"><span>📊</span>Pasar</div>
+  <div class="nav-item aktif"><span>₿</span>Kripto</div>
+  <div class="nav-item"><span>₹</span>Dompet</div>
+  <div class="nav-item"><span>📉</span>Portofolio</div>
 </div>
 
 <script>
-let grafikAktif = null;
+let saldoCash = 0.46;
+let totalInvestasi = 531.8;
 
-// Fungsi Buka Grafik
-function bukaGrafik(nama, sub, harga, tinggi, rendah){
-  // Tampilkan pesan sebentar
-  document.getElementById('popupBuka').style.display = 'block';
-  setTimeout(() => {
-    document.getElementById('popupBuka').style.display = 'none';
-
-    // Pindah ke halaman grafik
-    document.getElementById('halamanUtama').style.display = 'none';
-    document.getElementById('halamanGrafik').style.display = 'block';
-
-    // Isi data instrumen
-    document.getElementById('namaInstrumen').textContent = nama;
-    document.getElementById('subInstrumen').textContent = sub;
-    document.getElementById('hargaTertinggi').textContent = tinggi;
-    document.getElementById('hargaTerendah').textContent = rendah;
-
-    // Buat grafik
-    const ctx = document.getElementById('grafikUtama').getContext('2d');
-    if(grafikAktif) grafikAktif.destroy();
-    grafikAktif = new Chart(ctx, {
-      type: 'line',
-      data: {
-        labels: ['09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00'],
-        datasets: [{
-          data: [harga-10, harga+5, harga-5, harga+15, harga, harga+8, harga],
-          borderColor: var(--hijau),
-          backgroundColor: 'rgba(41,200,133,0.1)',
-          fill: true,
-          tension: 0.4,
-          pointRadius: 0
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {legend:{display:false}},
-        scales: {
-          x:{grid:{display:false},ticks:{color:var(--abu)}},
-          y:{grid:{color:var(--gelap)},ticks:{color:var(--abu)}}
-        }
-      }
-    });
-  }, 1200);
+// Fungsi Deposit
+function tambahSaldo(){
+  const jumlah = prompt("Masukkan jumlah deposit (Rp):");
+  const angka = parseFloat(jumlah);
+  if(isNaN(angka) || angka <=0){
+    alert("Masukkan jumlah yang benar!");
+    return;
+  }
+  saldoCash += angka;
+  totalInvestasi += angka;
+  document.querySelector(".saldo-kiri .angka").innerHTML = `Rp${totalInvestasi.toLocaleString('id-ID')} <span class="perubahan">(-0,56%)</span>`;
+  document.querySelector(".saldo-kanan .angka").textContent = `Rp${saldoCash.toLocaleString('id-ID')}`;
+  alert(`✅ Berhasil deposit Rp${angka.toLocaleString('id-ID')}!`);
 }
 
-// Kembali ke daftar
-function kembaliKeDaftar(){
-  document.getElementById('halamanGrafik').style.display = 'none';
-  document.getElementById('halamanUtama').style.display = 'block';
+// Fungsi Trade
+function bukaTrade(){
+  alert("Membuka halaman perdagangan kripto...");
 }
 
-function tutupPopup(){
-  document.getElementById('popupBuka').style.display = 'none';
-}
-
-// Navigasi
+// Efek klik tab
+document.querySelectorAll('.tab-item').forEach(tab => {
+  tab.onclick = () => {
+    document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('aktif'));
+    tab.classList.add('aktif');
+  };
+});
+document.querySelectorAll('.tab-tren').forEach(tab => {
+  tab.onclick = () => {
+    document.querySelectorAll('.tab-tren').forEach(t => t.classList.remove('aktif'));
+    tab.classList.add('aktif');
+  };
+});
 document.querySelectorAll('.nav-item').forEach(nav => {
   nav.onclick = () => {
     document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('aktif'));
