@@ -3,155 +3,202 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Akses Trading ZYY - Grafik Candlestick</title>
-<script src="https://cdn.jsdelivr.net/npm/lightweight-charts@4.1.0/dist/lightweight-charts.standalone.production.js"></script>
+<title>Akses Trading ZYY - Saham</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif;}
-:root{--bg:#121212;--card:#1E1E1E;--hijau:#16A34A;--merah:#DC2626;--teks:#FFFFFF;--abu:#9CA3AF;}
-body{background:var(--bg);color:var(--teks);padding-bottom:20px;}
+:root{--bg:#0F172A;--gelap:#1E293B;--biru:#3B82F6;--hijau:#22C55E;--merah:#EF4444;--teks:#F8FAFC;--abu:#94A3B8;}
+body{background:var(--bg);color:var(--teks);padding-bottom:90px;}
 
-/* Header Halaman */
-.header{padding:1rem;display:flex;align-items:center;gap:1rem;}
-.kembali{font-size:1.5rem;cursor:pointer;padding:.5rem;}
-.judul{flex:1;}
-.judul h1{font-size:1.3rem;}
-.judul p{font-size:.9rem;color:var(--abu);}
-.ikon{font-size:1.3rem;padding:.5rem;}
+/* Pencarian & Notif */
+.header-atas{display:flex;align-items:center;gap:1rem;padding:1rem;}
+.cari{flex:1;background:var(--gelap);border-radius:12px;padding:.8rem 1rem;color:var(--teks);border:none;display:flex;align-items:center;gap:.5rem;}
+.ikon{font-size:1.4rem;padding:.5rem;}
 
-/* Info Harga */
-.info-harga{padding:1rem;border-bottom:1px solid #333;}
-.harga-utama{font-size:2rem;font-weight:bold;}
-.harga-kecil{font-size:1rem;color:var(--abu);}
-.persen-naik{color:var(--hijau);margin-left:.5rem;}
-.data-24jam{display:flex;justify-content:space-between;margin-top:1rem;font-size:.85rem;color:var(--abu);flex-wrap:wrap;gap:.5rem;}
+/* Saldo & Deposit */
+.kotak-saldo{background:var(--gelap);margin:0 1rem 1.5rem;border-radius:12px;padding:1.2rem;display:flex;justify-content:space-between;align-items:center;}
+.teks-saldo p{font-size:.9rem;color:var(--abu);margin-bottom:.3rem;}
+.total-uang{font-size:1.5rem;font-weight:bold;}
+.ubah{color:var(--merah);font-size:.9rem;}
+.daya-beli{font-size:.9rem;color:var(--abu);margin-top:.5rem;}
+.btn-deposit{background:var(--biru);color:white;border:none;padding:.7rem 1.2rem;border-radius:8px;font-weight:bold;}
 
-/* Waktu */
-.waktu{display:flex;gap:1rem;padding:1rem;border-bottom:1px solid #333;overflow-x:auto;}
-.tombol-waktu{padding:.5rem 1rem;border-radius:20px;border:none;background:transparent;color:var(--abu);cursor:pointer;white-space:nowrap;}
-.tombol-waktu.aktif{background:#2563EB;color:white;}
+/* Tab Menu Atas */
+.tab-atas{display:flex;gap:2rem;padding:0 1rem 1rem;overflow-x:auto;}
+.tab-item{color:var(--abu);padding:.5rem 0;white-space:nowrap;cursor:pointer;}
+.tab-item.aktif{color:var(--teks);border-bottom:2px solid var(--biru);font-weight:bold;}
 
-/* Grafik Utama */
-.wadah-grafik{width:100%;height:380px;background:var(--bg);}
+/* IHSG & Waktu */
+.ihsg{padding:1rem;}
+.judul-ihsg{display:flex;align-items:center;gap:.5rem;margin-bottom:1rem;}
+.angka-ihsg{font-size:1.5rem;font-weight:bold;}
+.kenaikan{color:var(--hijau);font-size:1rem;}
+.pilihan-waktu{display:flex;gap:.5rem;margin-bottom:1rem;}
+.btn-waktu{padding:.5rem 1rem;border-radius:6px;border:none;background:transparent;color:var(--abu);cursor:pointer;}
+.btn-waktu.aktif{background:var(--biru);color:white;}
 
-/* Indikator & Tombol */
-.indikator{display:flex;gap:1rem;padding:1rem;border-bottom:1px solid #333;overflow-x:auto;}
-.tombol-indikator{padding:.5rem 1rem;border-radius:4px;border:none;background:transparent;color:var(--abu);cursor:pointer;white-space:nowrap;}
-.tombol-indikator.aktif{background:#374151;color:white;}
+/* Grafik */
+.wadah-grafik{background:var(--gelap);border-radius:12px;padding:1rem;margin:0 1rem;position:relative;}
+.info-grafik{text-align:center;font-size:.9rem;color:var(--abu);margin-bottom:.5rem;}
+.penuh-layar{position:absolute;right:1rem;bottom:1rem;color:var(--abu);font-size:1.2rem;}
 
-/* Pesanan & Tombol */
-.pesanan{padding:1rem;}
-.judul-pesanan{display:flex;gap:1rem;margin-bottom:1rem;}
-.tab-pesanan{color:var(--abu);cursor:pointer;}
-.tab-pesanan.aktif{color:var(--teks);font-weight:bold;}
-.tombol-beli-jual{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1rem;}
-.btn-beli{background:var(--hijau);color:white;padding:1rem;border-radius:8px;border:none;font-weight:bold;font-size:1.1rem;}
-.btn-jual{background:var(--merah);color:white;padding:1rem;border-radius:8px;border:none;font-weight:bold;font-size:1.1rem;}
+/* Tombol Menu Bawah Grafik */
+.menu-cepat{display:grid;grid-template-columns:repeat(5,1fr);gap:.5rem;padding:1.5rem 1rem;}
+.item-menu{text-align:center;}
+.item-menu .ikon{font-size:1.8rem;margin-bottom:.3rem;}
+.item-menu p{font-size:.8rem;color:var(--abu);}
+
+/* Tab Saham/Reksa Dana */
+.tab-bawah{display:flex;justify-content:center;gap:2rem;padding:1rem;background:var(--gelap);margin:0 1rem;border-radius:12px;}
+.tab-pilihan{display:flex;align-items:center;gap:.5rem;padding:.8rem 1.5rem;border-radius:20px;cursor:pointer;}
+.tab-pilihan.aktif{background:var(--biru);color:white;}
+.lihat-semua{text-align:right;padding:0 1rem;color:var(--biru);font-weight:bold;margin-bottom:1rem;}
+
+/* Nav Bawah */
+.nav-bawah{position:fixed;bottom:0;left:0;right:0;background:var(--gelap);display:flex;justify-content:space-around;padding:.8rem 0;border-top:1px solid #334155;}
+.nav-item{text-align:center;color:var(--abu);font-size:.75rem;cursor:pointer;}
+.nav-item.aktif{color:var(--biru);font-weight:bold;}
+.nav-item span{display:block;font-size:1.3rem;margin-bottom:.2rem;}
 </style>
 </head>
 <body>
 
-<!-- Header (Sudah Bisa Klik Kembali) -->
-<div class="header">
-  <div class="kembali" onclick="location.href='https://zii4you.github.io/Akses-treding-by-zyy/'">←</div>
-  <div class="judul">
-    <h1>BTC/IDR</h1>
+<!-- Header Atas -->
+<div class="header-atas">
+  <div class="cari">
+    <span>📊</span>
+    <span>Saham</span>
+    <span style="margin-left:auto;">🔍</span>
   </div>
-  <div class="ikon">⭐</div>
-  <div class="ikon">⋮</div>
+  <div class="ikon">🔔</div>
+  <div class="ikon">☰</div>
 </div>
 
-<!-- Info Harga -->
-<div class="info-harga">
-  <div class="harga-utama">1.093.074.829</div>
-  <div class="harga-kecil">Rp1.093.074.829 <span class="persen-naik">+3,54%</span></div>
-  <div class="data-24jam">
-    <div>Tertinggi 24J: 1.101.068.000</div>
-    <div>Terendah 24J: 1.050.509.830</div>
+<!-- Kotak Saldo -->
+<div class="kotak-saldo">
+  <div class="teks-saldo">
+    <p>Total Saham 👁️</p>
+    <div class="total-uang">Rp686 <span class="ubah">-Rp64 (-8,53%)</span></div>
+    <div class="daya-beli">Buying Power <span style="color:var(--abu)">Rp0</span></div>
+  </div>
+  <button class="btn-deposit">➕ Deposit</button>
+</div>
+
+<!-- Tab Menu -->
+<div class="tab-atas">
+  <div class="tab-item aktif">Jelajahi</div>
+  <div class="tab-item">Watchlist</div>
+  <div class="tab-item">Aset</div>
+  <div class="tab-item">Day Trading</div>
+  <div class="tab-item">Order</div>
+  <div class="tab-item">SIP</div>
+</div>
+
+<!-- IHSG & Grafik -->
+<div class="ihsg">
+  <div class="judul-ihsg">
+    <h2>IHSG</h2>
+    <div class="angka-ihsg">5.772,33</div>
+    <div class="kenaikan">▲ 77,21 (+1,36%)</div>
+  </div>
+  <div class="pilihan-waktu">
+    <button class="btn-waktu aktif">1D</button>
+    <button class="btn-waktu">1W</button>
+    <button class="btn-waktu">1M</button>
+    <button class="btn-waktu">3M</button>
+    <button class="btn-waktu">1Y</button>
+    <button class="btn-waktu">5Y</button>
+    <button class="btn-waktu">ALL</button>
   </div>
 </div>
 
-<!-- Pilihan Waktu -->
-<div class="waktu">
-  <button class="tombol-waktu">15 Menit</button>
-  <button class="tombol-waktu">1 Jam</button>
-  <button class="tombol-waktu aktif">4 Jam</button>
-  <button class="tombol-waktu">1 Hari</button>
-  <button class="tombol-waktu">Lebih ▾</button>
+<div class="wadah-grafik">
+  <div class="info-grafik">H: 5806 &nbsp;&nbsp;|&nbsp;&nbsp; L: 5706</div>
+  <canvas id="grafikIHSG" height="220"></canvas>
+  <div class="penuh-layar">⛶</div>
 </div>
 
-<!-- Grafik Candlestick -->
-<div class="wadah-grafik" id="grafik"></div>
-
-<!-- Indikator -->
-<div class="indikator">
-  <button class="tombol-indikator">MA</button>
-  <button class="tombol-indikator aktif">EMA</button>
-  <button class="tombol-indikator">BOLL</button>
-  <button class="tombol-indikator">VOL</button>
-  <button class="tombol-indikator aktif">MACD</button>
-  <button class="tombol-indikator">KDJ</button>
-  <button class="tombol-indikator">RSI</button>
+<!-- Menu Cepat -->
+<div class="menu-cepat">
+  <div class="item-menu"><div class="ikon">📊</div><p>RunningTrade</p></div>
+  <div class="item-menu"><div class="ikon">👔</div><p>Top Broker</p></div>
+  <div class="item-menu"><div class="ikon">🗂️</div><p>Top Stock</p></div>
+  <div class="item-menu"><div class="ikon">🗓️</div><p>Kalender</p></div>
+  <div class="item-menu"><div class="ikon">🏆</div><p>Leaderboard</p></div>
 </div>
 
-<!-- Pesanan -->
-<div class="pesanan">
-  <div class="judul-pesanan">
-    <div class="tab-pesanan aktif">Pesanan</div>
-    <div class="tab-pesanan">Riwayat</div>
-  </div>
-  <div class="tombol-beli-jual">
-    <button class="btn-beli">Beli</button>
-    <button class="btn-jual">Jual</button>
-  </div>
+<!-- Tab Pilihan -->
+<div class="tab-bawah">
+  <div class="tab-pilihan"><span>🚀</span> e-IPO</div>
+  <div class="tab-pilihan aktif"><span>📊</span> Saham</div>
+  <div class="tab-pilihan"><span>🌱</span> Reksa Dana</div>
+</div>
+<div class="lihat-semua">Lihat Semua ➡</div>
+
+<!-- Nav Bawah -->
+<div class="nav-bawah">
+  <div class="nav-item"><span>🏠</span>Beranda</div>
+  <div class="nav-item aktif"><span>🔭</span>Investasi</div>
+  <div class="nav-item"><span>₿</span>Kripto</div>
+  <div class="nav-item"><span>🏛️</span>Obligasi</div>
+  <div class="nav-item"><span>📈</span>Portofolio</div>
 </div>
 
 <script>
-// Buat Grafik Candlestick
-const grafik = LightweightCharts.createChart(document.getElementById('grafik'), {
-  layout: { background: { color: '#121212' }, textColor: '#9CA3AF' },
-  grid: { vertLines: { color: '#1F1F1F' }, horzLines: { color: '#1F1F1F' } },
-  crosshair: { mode: LightweightCharts.CrosshairMode.Normal },
-  rightPriceScale: { borderColor: '#333' },
-  timeScale: { borderColor: '#333', timeVisible: true },
-  width: document.getElementById('grafik').clientWidth,
-  height: 380
+// Buat Grafik IHSG
+const ctx = document.getElementById('grafikIHSG').getContext('2d');
+new Chart(ctx, {
+  type: 'line',
+  data: {
+    labels: ['09:30', '10:00', '10:30', '11:00', '11:30'],
+    datasets: [{
+      label: 'IHSG',
+      data: [5710, 5760, 5790, 5770, 5772],
+      borderColor: '#22C55E',
+      backgroundColor: 'rgba(34,197,94,0.15)',
+      fill: true,
+      tension: 0.4,
+      pointRadius: 0
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {legend:{display:false}},
+    scales: {
+      x:{grid:{display:false},ticks:{color:'#94A3B8'}},
+      y:{grid:{color:'#334155'},ticks:{color:'#94A3B8'}}
+    }
+  }
 });
 
-// Tambah Data Lilin
-const seriLilin = grafik.addCandlestickSeries({
-  upColor: '#16A34A', downColor: '#DC2626',
-  borderUpColor: '#16A34A', borderDownColor: '#DC2626',
-  wickUpColor: '#16A34A', wickDownColor: '#DC2626'
+// Fungsi Klik Waktu
+document.querySelectorAll('.btn-waktu').forEach(btn => {
+  btn.onclick = () => {
+    document.querySelectorAll('.btn-waktu').forEach(b => b.classList.remove('aktif'));
+    btn.classList.add('aktif');
+  };
 });
 
-seriLilin.setData([
-  { time: '2026-06-18', open: 1080000000, high: 1085000000, low: 1078000000, close: 1082000000 },
-  { time: '2026-06-19', open: 1082000000, high: 1095000000, low: 1081000000, close: 1092000000 },
-  { time: '2026-06-20', open: 1092000000, high: 1094000000, low: 1065000000, close: 1070000000 },
-  { time: '2026-06-21', open: 1070000000, high: 1075000000, low: 1062000000, close: 1068000000 },
-  { time: '2026-06-22', open: 1068000000, high: 1080000000, low: 1067000000, close: 1078000000 },
-  { time: '2026-06-23', open: 1078000000, high: 1090000000, low: 1075000000, close: 1085000000 },
-  { time: '2026-06-24', open: 1085000000, high: 1088000000, low: 1040000000, close: 1050000000 },
-  { time: '2026-06-25', open: 1050000000, high: 1070000000, low: 1035000000, close: 1065000000 },
-  { time: '2026-06-26', open: 1065000000, high: 1095000000, low: 1060000000, close: 1093000000 }
-]);
+// Fungsi Klik Tab
+document.querySelectorAll('.tab-item').forEach(tab => {
+  tab.onclick = () => {
+    document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('aktif'));
+    tab.classList.add('aktif');
+  };
+});
 
-// Tambah Garis EMA
-const seriEma7 = grafik.addLineSeries({ color: '#F7931A', lineWidth: 2 });
-seriEma7.setData([
-  { time: '2026-06-18', value: 1079000000 },
-  { time: '2026-06-19', value: 1085000000 },
-  { time: '2026-06-20', value: 1078000000 },
-  { time: '2026-06-21', value: 1070000000 },
-  { time: '2026-06-22', value: 1072000000 },
-  { time: '2026-06-23', value: 1080000000 },
-  { time: '2026-06-24', value: 1065000000 },
-  { time: '2026-06-25', value: 1060000000 },
-  { time: '2026-06-26', value: 1082000000 }
-]);
+document.querySelectorAll('.tab-pilihan').forEach(tab => {
+  tab.onclick = () => {
+    document.querySelectorAll('.tab-pilihan').forEach(t => t.classList.remove('aktif'));
+    tab.classList.add('aktif');
+  };
+});
 
-window.addEventListener('resize', () => {
-  grafik.applyOptions({ width: document.getElementById('grafik').clientWidth });
+document.querySelectorAll('.nav-item').forEach(nav => {
+  nav.onclick = () => {
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('aktif'));
+    nav.classList.add('aktif');
+  };
 });
 </script>
 </body>
