@@ -4,212 +4,185 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>TradingView - Pasar Keuangan</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;}
 :root{
   --bg:#000000;
   --gelap:#1A1A1A;
+  --gelap-lembut:#272727;
   --hijau:#29C885;
   --merah:#F23645;
+  --biru:#3B82F6;
   --teks:#FFFFFF;
   --abu:#888888;
   --abu-muda:#B0B0B0;
 }
 body{background:var(--bg);color:var(--teks);padding-bottom:70px;}
 
+/* Tampilan Utama & Grafik */
+#halamanUtama{display:block;}
+#halamanGrafik{display:none;}
+
 /* Header Atas */
 .header-atas{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.2rem;position:sticky;top:0;background:var(--bg);z-index:10;}
 .waktu{background:rgba(41,200,133,0.2);color:var(--hijau);padding:.4rem .8rem;border-radius:20px;font-size:.9rem;font-weight:500;}
-.logo{font-weight:bold;font-size:1.2rem;}
+.logo{font-weight:bold;font-size:1.4rem;color:var(--abu-muda);}
+.tombol-kembali{font-size:1.5rem;color:var(--abu);cursor:pointer;}
 
 /* Daftar Instrumen */
 .daftar{padding:0 1.2rem;}
-.item{display:flex;align-items:center;justify-content:space-between;padding:1rem 0;border-bottom:1px solid var(--gelap);}
+.item{display:flex;align-items:center;justify-content:space-between;padding:1rem 0;border-bottom:1px solid var(--gelap);cursor:pointer;}
 .kiri{display:flex;align-items:center;gap:.8rem;}
 .ikon{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:1rem;flex-shrink:0;}
-.info h3{font-size:1.1rem;margin-bottom:.2rem;}
-.info p{font-size:.85rem;color:var(--abu);}
+.info h3{font-size:1.2rem;margin-bottom:.2rem;}
+.info p{font-size:.9rem;color:var(--abu);}
 .kanan{text-align:right;}
-.harga{font-size:1.1rem;font-weight:500;margin-bottom:.2rem;}
-.perubahan{font-size:.9rem;}
+.harga{font-size:1.2rem;font-weight:500;margin-bottom:.2rem;}
+.perubahan{font-size:1rem;}
 .naik{color:var(--hijau);}
 .turun{color:var(--merah);}
 
 /* Judul Kategori */
-.kategori{font-size:1rem;color:var(--abu-muda);font-weight:500;margin:1.5rem 0 .8rem;}
+.kategori{font-size:1.1rem;color:var(--abu-muda);font-weight:500;margin:1.5rem 0 .8rem;}
+
+/* Halaman Grafik */
+.judul-grafik{padding:1.5rem 1.2rem;}
+.nama-instrumen{font-size:1.5rem;font-weight:bold;margin-bottom:.5rem;}
+.sub-instrumen{font-size:1rem;color:var(--abu);}
+.wadah-grafik{padding:0 1.2rem;}
+#grafikUtama{height:320px !important;width:100% !important;}
+.info-grafik{display:flex;justify-content:space-between;padding:1rem 1.2rem;color:var(--abu);font-size:.9rem;}
+
+/* Popup */
+.popup{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:var(--gelap);border-radius:16px;padding:1.5rem;z-index:999;width:85%;max-width:350px;display:none;}
+.popup-teks{font-size:1.2rem;margin-bottom:1.5rem;}
+.popup-tombol{text-align:right;}
+.popup-tutup{color:var(--biru);font-size:1.1rem;font-weight:500;cursor:pointer;}
 
 /* Navigasi Bawah */
 .nav-bawah{position:fixed;bottom:0;left:0;right:0;background:var(--bg);border-top:1px solid var(--gelap);display:flex;justify-content:space-around;padding:.8rem 0;}
-.nav-item{text-align:center;color:var(--abu);font-size:.75rem;cursor:pointer;}
+.nav-item{text-align:center;color:var(--abu);font-size:.8rem;cursor:pointer;}
 .nav-item.aktif{color:var(--teks);font-weight:500;}
-.nav-item span{display:block;font-size:1.4rem;margin-bottom:.2rem;}
+.nav-item span{display:block;font-size:1.5rem;margin-bottom:.2rem;}
 </style>
 </head>
 <body>
 
-<!-- Header Atas -->
-<div class="header-atas">
-  <div class="waktu">21.54</div>
-  <div class="logo">TradingView</div>
-  <div style="font-size:1.5rem;font-weight:300;">+</div>
+<!-- Halaman Utama -->
+<div id="halamanUtama">
+  <div class="header-atas">
+    <div class="waktu">21.54</div>
+    <div class="logo">TradingView</div>
+    <div style="font-size:1.8rem;font-weight:300;">+</div>
+  </div>
+
+  <div class="daftar">
+    <!-- Indeks -->
+    <div class="item" onclick="bukaGrafik('COMPOSITE', 'Indeks Harga Saham Gabungan', 5744, 5790, 5700)">
+      <div class="kiri">
+        <div class="ikon" style="background:#2A2A2A;">🏁</div>
+        <div class="info">
+          <h3>COMPOSITE <span style="color:var(--abu);font-weight:normal;">– D</span></h3>
+          <p>Indeks Harga Saham Gabungan</p>
+        </div>
+      </div>
+      <div class="kanan">
+        <div class="harga">5.744,5560</div>
+        <div class="perubahan naik">+49,4400 +0,87%</div>
+      </div>
+    </div>
+
+    <div class="item" onclick="bukaGrafik('IDX30', 'IDX 30 Index', 320, 325, 315)">
+      <div class="kiri">
+        <div class="ikon" style="background:#B72424;">30</div>
+        <div class="info">
+          <h3>IDX30 <span style="color:var(--abu);font-weight:normal;">– D</span></h3>
+          <p>IDX 30 Index</p>
+        </div>
+      </div>
+      <div class="kanan">
+        <div class="harga">320,5050</div>
+        <div class="perubahan naik">+4,9250 +1,56%</div>
+      </div>
+    </div>
+
+    <div class="item" onclick="bukaGrafik('IDXBUMN20', 'IDX BUMN20 Index', 287, 292, 282)">
+      <div class="kiri">
+        <div class="ikon" style="background:#165DFF;">🇮🇩</div>
+        <div class="info">
+          <h3>IDXBUMN20 <span style="color:var(--abu);font-weight:normal;">– D</span></h3>
+          <p>IDX BUMN20 Index</p>
+        </div>
+      </div>
+      <div class="kanan">
+        <div class="harga">287,9110</div>
+        <div class="perubahan naik">+4,2430 +1,50%</div>
+      </div>
+    </div>
+
+    <!-- Saham -->
+    <div class="kategori">Saham (Stock)</div>
+    <div class="item" onclick="bukaGrafik('TLKM', 'PT Telkom Indonesia (Persero) Tbk', 2450, 2480, 2420)">
+      <div class="kiri">
+        <div class="ikon" style="background:#E6212A;">📊</div>
+        <div class="info">
+          <h3>TLKM <span style="color:var(--abu);font-weight:normal;">– D</span></h3>
+          <p>PT Telkom Indonesia (Persero) Tbk</p>
+        </div>
+      </div>
+      <div class="kanan">
+        <div class="harga">2.450,0</div>
+        <div class="perubahan naik">+10,0 +0,41%</div>
+      </div>
+    </div>
+
+    <!-- Forex -->
+    <div class="kategori">Forex</div>
+    <div class="item" onclick="bukaGrafik('EURUSD', 'Euro/Dollar AS', 1.1440, 1.1480, 1.1400)">
+      <div class="kiri">
+        <div class="ikon" style="background:linear-gradient(90deg,#003399 50%,#FFFFFF 50%);">🇪🇺🇺🇸</div>
+        <div class="info">
+          <h3>EURUSD</h3>
+          <p>Euro/Dollar AS</p>
+        </div>
+      </div>
+      <div class="kanan">
+        <div class="harga">1,1440²</div>
+        <div class="perubahan naik">+0,00631 +0,55%</div>
+      </div>
+    </div>
+  </div>
 </div>
 
-<!-- Daftar Pasar -->
-<div class="daftar">
-  <!-- Indeks -->
-  <div class="item">
-    <div class="kiri">
-      <div class="ikon" style="background:#2A2A2A;">
-        <span style="font-size:1.2rem;">🏁</span>
-      </div>
-      <div class="info">
-        <h3>COMPOSITE <span style="color:var(--abu);font-weight:normal;">– D</span></h3>
-        <p>Indeks Harga Saham Gabungan</p>
-      </div>
-    </div>
-    <div class="kanan">
-      <div class="harga">5.744,5560</div>
-      <div class="perubahan naik">+49,4400 +0,87%</div>
-    </div>
+<!-- Halaman Grafik -->
+<div id="halamanGrafik">
+  <div class="header-atas">
+    <div class="tombol-kembali" onclick="kembaliKeDaftar()">←</div>
+    <div class="logo">Chart</div>
+    <div style="width:24px;"></div>
   </div>
 
-  <div class="item">
-    <div class="kiri">
-      <div class="ikon" style="background:#B72424;">30</div>
-      <div class="info">
-        <h3>IDX30 <span style="color:var(--abu);font-weight:normal;">– D</span></h3>
-        <p>IDX 30 Index</p>
-      </div>
-    </div>
-    <div class="kanan">
-      <div class="harga">320,5050</div>
-      <div class="perubahan naik">+4,9250 +1,56%</div>
-    </div>
+  <div class="judul-grafik">
+    <div class="nama-instrumen" id="namaInstrumen">TLKM</div>
+    <div class="sub-instrumen" id="subInstrumen">PT Telkom Indonesia (Persero) Tbk</div>
   </div>
 
-  <div class="item">
-    <div class="kiri">
-      <div class="ikon" style="background:#165DFF;">🇮🇩</div>
-      <div class="info">
-        <h3>IDXBUMN20 <span style="color:var(--abu);font-weight:normal;">– D</span></h3>
-        <p>IDX BUMN20 Index</p>
-      </div>
-    </div>
-    <div class="kanan">
-      <div class="harga">287,9110</div>
-      <div class="perubahan naik">+4,2430 +1,50%</div>
-    </div>
+  <div class="wadah-grafik">
+    <canvas id="grafikUtama"></canvas>
   </div>
 
-  <!-- Saham -->
-  <div class="kategori">Saham (Stock)</div>
-
-  <div class="item">
-    <div class="kiri">
-      <div class="ikon" style="background:#FFF;border-radius:50%;overflow:hidden;">
-        <span style="color:#F7931A;font-size:.9rem;">antam</span>
-      </div>
-      <div class="info">
-        <h3>ANTM <span style="color:var(--abu);font-weight:normal;">– D</span></h3>
-        <p>PT ANTAM (Persero) Tbk</p>
-      </div>
-    </div>
-    <div class="kanan">
-      <div class="harga">2.760,0</div>
-      <div class="perubahan naik">+150,0 +5,75%</div>
-    </div>
+  <div class="info-grafik">
+    <div>Tertinggi: <span id="hargaTertinggi">2480</span></div>
+    <div>Terendah: <span id="hargaTerendah">2420</span></div>
   </div>
+</div>
 
-  <div class="item">
-    <div class="kiri">
-      <div class="ikon" style="background:#E6212A;">
-        <span style="font-size:1.2rem;">📶</span>
-      </div>
-      <div class="info">
-        <h3>TLKM <span style="color:var(--abu);font-weight:normal;">– D</span></h3>
-        <p>PT Telkom Indonesia (Persero) Tbk</p>
-      </div>
-    </div>
-    <div class="kanan">
-      <div class="harga">2.450,0</div>
-      <div class="perubahan naik">+10,0 +0,41%</div>
-    </div>
-  </div>
-
-  <!-- Forex -->
-  <div class="kategori">Forex</div>
-
-  <div class="item">
-    <div class="kiri">
-      <div class="ikon" style="background:linear-gradient(90deg,#003399 50%,#FFFFFF 50%);">🇪🇺🇺🇸</div>
-      <div class="info">
-        <h3>EURUSD</h3>
-        <p>Euro/Dollar AS</p>
-      </div>
-    </div>
-    <div class="kanan">
-      <div class="harga">1,1440²</div>
-      <div class="perubahan naik">+0,00631 +0,55%</div>
-    </div>
-  </div>
-
-  <div class="item">
-    <div class="kiri">
-      <div class="ikon" style="background:linear-gradient(90deg,#012169 50%,#FFFFFF 50%);">🇬🇧🇺🇸</div>
-      <div class="info">
-        <h3>GBPUSD</h3>
-        <p>Pound Inggris / Dollar AS</p>
-      </div>
-    </div>
-    <div class="kanan">
-      <div class="harga">1,3369⁵</div>
-      <div class="perubahan naik">+0,00953 +0,72%</div>
-    </div>
-  </div>
-
-  <div class="item">
-    <div class="kiri">
-      <div class="ikon" style="background:linear-gradient(90deg,#BC002D 50%,#FFFFFF 50%);">🇺🇸🇯🇵</div>
-      <div class="info">
-        <h3>USDJPY</h3>
-        <p>Dollar A.S. / Yen Jepang</p>
-      </div>
-    </div>
-    <div class="kanan">
-      <div class="harga">161,05²</div>
-      <div class="perubahan turun">−1,517 −0,93%</div>
-    </div>
-  </div>
-
-  <!-- Kontrak Berjangka -->
-  <div class="kategori">Kontrak berjangka (Futures)</div>
-
-  <div class="item">
-    <div class="kiri">
-      <div class="ikon" style="background:#000;border:1px solid #333;">💧</div>
-      <div class="info">
-        <h3>USOIL</h3>
-        <p>CFD pada Minyak Mentah WTI</p>
-      </div>
-    </div>
-    <div class="kanan">
-      <div class="harga">67,68</div>
-      <div class="perubahan turun">−0,40 −0,59%</div>
-    </div>
-  </div>
-
-  <div class="item">
-    <div class="kiri">
-      <div class="ikon" style="background:#000;border:1px solid #333;">💧</div>
-      <div class="info">
-        <h3>UKOIL</h3>
-        <p>CFD pada Minyak Mentah Brent</p>
-      </div>
-    </div>
-    <div class="kanan">
-      <div class="harga">70,79</div>
-      <div class="perubahan turun">−0,41 −0,58%</div>
-    </div>
+<!-- Popup -->
+<div class="popup" id="popupBuka">
+  <div class="popup-teks">Membuka grafik instrumen...</div>
+  <div class="popup-tombol">
+    <span class="popup-tutup" onclick="tutupPopup()">Tutup</span>
   </div>
 </div>
 
@@ -223,14 +196,65 @@ body{background:var(--bg);color:var(--teks);padding-bottom:70px;}
 </div>
 
 <script>
-// Efek klik pada item
-document.querySelectorAll('.item').forEach(item => {
-  item.onclick = () => {
-    alert('Membuka grafik instrumen...');
-  };
-});
+let grafikAktif = null;
 
-// Efek klik navigasi
+// Fungsi Buka Grafik
+function bukaGrafik(nama, sub, harga, tinggi, rendah){
+  // Tampilkan pesan sebentar
+  document.getElementById('popupBuka').style.display = 'block';
+  setTimeout(() => {
+    document.getElementById('popupBuka').style.display = 'none';
+
+    // Pindah ke halaman grafik
+    document.getElementById('halamanUtama').style.display = 'none';
+    document.getElementById('halamanGrafik').style.display = 'block';
+
+    // Isi data instrumen
+    document.getElementById('namaInstrumen').textContent = nama;
+    document.getElementById('subInstrumen').textContent = sub;
+    document.getElementById('hargaTertinggi').textContent = tinggi;
+    document.getElementById('hargaTerendah').textContent = rendah;
+
+    // Buat grafik
+    const ctx = document.getElementById('grafikUtama').getContext('2d');
+    if(grafikAktif) grafikAktif.destroy();
+    grafikAktif = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: ['09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00'],
+        datasets: [{
+          data: [harga-10, harga+5, harga-5, harga+15, harga, harga+8, harga],
+          borderColor: var(--hijau),
+          backgroundColor: 'rgba(41,200,133,0.1)',
+          fill: true,
+          tension: 0.4,
+          pointRadius: 0
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {legend:{display:false}},
+        scales: {
+          x:{grid:{display:false},ticks:{color:var(--abu)}},
+          y:{grid:{color:var(--gelap)},ticks:{color:var(--abu)}}
+        }
+      }
+    });
+  }, 1200);
+}
+
+// Kembali ke daftar
+function kembaliKeDaftar(){
+  document.getElementById('halamanGrafik').style.display = 'none';
+  document.getElementById('halamanUtama').style.display = 'block';
+}
+
+function tutupPopup(){
+  document.getElementById('popupBuka').style.display = 'none';
+}
+
+// Navigasi
 document.querySelectorAll('.nav-item').forEach(nav => {
   nav.onclick = () => {
     document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('aktif'));
