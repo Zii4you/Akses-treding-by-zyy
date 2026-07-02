@@ -12,7 +12,7 @@ body{background:var(--bg);color:var(--teks);padding-bottom:20px;}
 
 /* Header Halaman */
 .header{padding:1rem;display:flex;align-items:center;gap:1rem;}
-.kembali{font-size:1.5rem;}
+.kembali{font-size:1.5rem;cursor:pointer;padding:.5rem;}
 .judul{flex:1;}
 .judul h1{font-size:1.3rem;}
 .judul p{font-size:.9rem;color:var(--abu);}
@@ -23,7 +23,7 @@ body{background:var(--bg);color:var(--teks);padding-bottom:20px;}
 .harga-utama{font-size:2rem;font-weight:bold;}
 .harga-kecil{font-size:1rem;color:var(--abu);}
 .persen-naik{color:var(--hijau);margin-left:.5rem;}
-.data-24jam{display:flex;justify-content:space-between;margin-top:1rem;font-size:.85rem;color:var(--abu);}
+.data-24jam{display:flex;justify-content:space-between;margin-top:1rem;font-size:.85rem;color:var(--abu);flex-wrap:wrap;gap:.5rem;}
 
 /* Waktu */
 .waktu{display:flex;gap:1rem;padding:1rem;border-bottom:1px solid #333;overflow-x:auto;}
@@ -50,9 +50,9 @@ body{background:var(--bg);color:var(--teks);padding-bottom:20px;}
 </head>
 <body>
 
-<!-- Header -->
+<!-- Header (Sudah Bisa Klik Kembali) -->
 <div class="header">
-  <div class="kembali">←</div>
+  <div class="kembali" onclick="location.href='https://zii4you.github.io/Akses-treding-by-zyy/'">←</div>
   <div class="judul">
     <h1>BTC/IDR</h1>
   </div>
@@ -108,14 +108,8 @@ body{background:var(--bg);color:var(--teks);padding-bottom:20px;}
 <script>
 // Buat Grafik Candlestick
 const grafik = LightweightCharts.createChart(document.getElementById('grafik'), {
-  layout: {
-    background: { color: '#121212' },
-    textColor: '#9CA3AF'
-  },
-  grid: {
-    vertLines: { color: '#1F1F1F' },
-    horzLines: { color: '#1F1F1F' }
-  },
+  layout: { background: { color: '#121212' }, textColor: '#9CA3AF' },
+  grid: { vertLines: { color: '#1F1F1F' }, horzLines: { color: '#1F1F1F' } },
   crosshair: { mode: LightweightCharts.CrosshairMode.Normal },
   rightPriceScale: { borderColor: '#333' },
   timeScale: { borderColor: '#333', timeVisible: true },
@@ -123,17 +117,13 @@ const grafik = LightweightCharts.createChart(document.getElementById('grafik'), 
   height: 380
 });
 
-// Tambah Data Lilin (Contoh)
+// Tambah Data Lilin
 const seriLilin = grafik.addCandlestickSeries({
-  upColor: '#16A34A',
-  downColor: '#DC2626',
-  borderUpColor: '#16A34A',
-  borderDownColor: '#DC2626',
-  wickUpColor: '#16A34A',
-  wickDownColor: '#DC2626'
+  upColor: '#16A34A', downColor: '#DC2626',
+  borderUpColor: '#16A34A', borderDownColor: '#DC2626',
+  wickUpColor: '#16A34A', wickDownColor: '#DC2626'
 });
 
-// Data contoh bergerak seperti gambar
 seriLilin.setData([
   { time: '2026-06-18', open: 1080000000, high: 1085000000, low: 1078000000, close: 1082000000 },
   { time: '2026-06-19', open: 1082000000, high: 1095000000, low: 1081000000, close: 1092000000 },
@@ -146,7 +136,7 @@ seriLilin.setData([
   { time: '2026-06-26', open: 1065000000, high: 1095000000, low: 1060000000, close: 1093000000 }
 ]);
 
-// Tambah Garis EMA Contoh
+// Tambah Garis EMA
 const seriEma7 = grafik.addLineSeries({ color: '#F7931A', lineWidth: 2 });
 seriEma7.setData([
   { time: '2026-06-18', value: 1079000000 },
@@ -160,7 +150,6 @@ seriEma7.setData([
   { time: '2026-06-26', value: 1082000000 }
 ]);
 
-// Sesuaikan ukuran saat layar berubah
 window.addEventListener('resize', () => {
   grafik.applyOptions({ width: document.getElementById('grafik').clientWidth });
 });
