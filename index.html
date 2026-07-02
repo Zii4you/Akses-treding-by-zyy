@@ -45,9 +45,10 @@ body{background:var(--bg);color:var(--teks);padding-bottom:90px;}
 .btn-waktu{padding:.5rem 1rem;border-radius:6px;border:none;background:transparent;color:var(--abu);cursor:pointer;}
 .btn-waktu.aktif{background:var(--biru-terang);color:white;}
 
-/* Grafik */
-.wadah-grafik{background:var(--biru-kotak);border-radius:12px;padding:1.5rem;margin:0 1rem;}
-.info-grafik{text-align:center;font-size:.9rem;color:var(--abu);margin-bottom:1rem;}
+/* Grafik (UKURAN DIPASANG PAS) */
+.wadah-grafik{background:var(--biru-kotak);border-radius:12px;padding:1rem;margin:0 1rem;}
+.info-grafik{text-align:center;font-size:.9rem;color:var(--abu);margin-bottom:.5rem;}
+#grafikIHSG{height:240px !important;width:100% !important;}
 
 /* Form Transaksi */
 .form-transaksi{margin:1.5rem 1rem;background:var(--biru-kotak);border-radius:12px;padding:1.2rem;}
@@ -114,10 +115,10 @@ body{background:var(--bg);color:var(--teks);padding-bottom:90px;}
   </div>
 </div>
 
-<!-- Grafik (Sudah Diperbaiki) -->
+<!-- Grafik -->
 <div class="wadah-grafik">
   <div class="info-grafik">H: 5806 &nbsp;&nbsp;|&nbsp;&nbsp; L: 5706</div>
-  <canvas id="grafikIHSG" height="220"></canvas>
+  <canvas id="grafikIHSG"></canvas>
 </div>
 
 <!-- Form Transaksi -->
@@ -149,10 +150,9 @@ body{background:var(--bg);color:var(--teks);padding-bottom:90px;}
 </div>
 
 <script>
-// Variabel Saldo
 let saldo = 0;
 
-// Grafik IHSG (Sudah Diperbaiki)
+// Grafik dengan ukuran yang pas
 const ctx = document.getElementById('grafikIHSG').getContext('2d');
 new Chart(ctx, {
   type: 'line',
@@ -170,7 +170,8 @@ new Chart(ctx, {
   },
   options: {
     responsive: true,
-    maintainAspectRatio: false,
+    maintainAspectRatio: true, // KUNCI: agar grafik tidak melar
+    aspectRatio: 16/9, // Rasio lebar : tinggi pas
     plugins: {legend:{display:false}},
     scales: {
       x:{grid:{display:false},ticks:{color:'#94A3B8'}},
@@ -179,20 +180,18 @@ new Chart(ctx, {
   }
 });
 
-// Fungsi Tambah Saldo
+// Fungsi Deposit
 function tambahSaldo(){
   const jumlah = parseInt(document.getElementById('inputDeposit').value);
   const pesan = document.getElementById('pesan');
-
   if(isNaN(jumlah) || jumlah <= 0){
-    pesan.innerHTML = "⚠️ Masukkan jumlah uang yang benar!";
+    pesan.innerHTML = "⚠️ Masukkan jumlah yang benar!";
     pesan.style.color = '#EF4444';
     return;
   }
-
   saldo += jumlah;
   document.getElementById('txtDayaBeli').textContent = "Rp" + saldo.toLocaleString('id-ID');
-  pesan.innerHTML = "✅ Berhasil deposit Rp" + jumlah.toLocaleString('id-ID') + "!";
+  pesan.innerHTML = "✅ Berhasil deposit Rp" + jumlah.toLocaleString('id-ID');
   pesan.style.color = '#22C55E';
   document.getElementById('inputDeposit').value = "";
 }
@@ -204,9 +203,8 @@ function beliSaham(){
   const jumlah = parseInt(document.getElementById('jumlahLembar').value);
   const total = harga * jumlah;
   const pesan = document.getElementById('pesan');
-
   if(!kode || isNaN(harga) || harga <=0 || isNaN(jumlah) || jumlah < 100){
-    pesan.innerHTML = "⚠️ Isi data benar! Minimal beli 100 lembar.";
+    pesan.innerHTML = "⚠️ Isi data benar! Minimal 100 lembar.";
     pesan.style.color = '#EF4444';
     return;
   }
@@ -215,14 +213,13 @@ function beliSaham(){
     pesan.style.color = '#EF4444';
     return;
   }
-
   saldo -= total;
   document.getElementById('txtDayaBeli').textContent = "Rp" + saldo.toLocaleString('id-ID');
-  pesan.innerHTML = "✅ Berhasil beli " + jumlah + " lembar " + kode + "! Sisa saldo: Rp" + saldo.toLocaleString('id-ID');
+  pesan.innerHTML = "✅ Berhasil beli " + jumlah + " lembar " + kode;
   pesan.style.color = '#22C55E';
 }
 
-// Fungsi Tab
+// Tombol Tab
 document.querySelectorAll('.btn-waktu').forEach(b => b.onclick = function(){
   document.querySelectorAll('.btn-waktu').forEach(x => x.classList.remove('aktif'));
   this.classList.add('aktif');
