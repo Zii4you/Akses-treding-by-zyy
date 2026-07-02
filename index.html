@@ -1,42 +1,206 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Akses Trading ZYY - Simulasi Pasar</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif;}
+:root{--bg:#121212;--card:#1E1E1E;--hijau:#16A34A;--merah:#DC2626;--teks:#FFFFFF;--abu:#9CA3AF;}
+body{background:var(--bg);color:var(--teks);padding-bottom:80px;}
+
+/* Header Atas */
+.header-atas{display:flex;align-items:center;justify-content:space-between;padding:1rem;background:var(--bg);position:sticky;top:0;z-index:99;}
+.cari{flex:1;margin:0 1rem;background:var(--card);border-radius:20px;padding:.6rem 1rem;color:var(--teks);border:none;}
+.ikon{width:32px;height:32px;display:flex;align-items:center;justify-content:center;}
+
+/* Saldo & Tombol */
+.saldo-section{padding:1rem;display:flex;align-items:center;justify-content:space-between;}
+.saldo{font-size:1.2rem;font-weight:bold;}
+.btn-setor{background:var(--hijau);color:white;padding:.7rem 1.2rem;border-radius:8px;border:none;font-weight:bold;}
+
+/* Menu Ikon */
+.menu-ikon{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;padding:0 1rem 1.5rem;}
+.item-ikon{text-align:center;}
+.bulat{width:48px;height:48px;border-radius:50%;background:var(--card);display:flex;align-items:center;justify-content:center;margin:0 auto .3rem;font-size:1.3rem;}
+.item-ikon p{font-size:.8rem;color:var(--abu);}
+
+/* Iklan */
+.banner{margin:0 1rem 1.5rem;border-radius:10px;overflow:hidden;background:linear-gradient(90deg,#1E40AF,#3B82F6);padding:1rem;display:flex;align-items:center;justify-content:space-between;}
+.banner h3{color:white;font-size:1rem;}
+.banner span{background:white;color:#1E40AF;padding:.4rem .8rem;border-radius:20px;font-weight:bold;font-size:.9rem;}
+
+/* Tab Menu */
+.tab-menu{display:flex;gap:1.5rem;padding:0 1rem .8rem;border-bottom:1px solid #333;}
+.tab{font-weight:500;color:var(--abu);padding:.5rem 0;}
+.tab.aktif{color:var(--teks);border-bottom:2px solid var(--hijau);}
+
+/* Grafik */
+.chart-container{padding:1rem;margin:1rem;background:var(--card);border-radius:10px;}
+.chart-judul{margin-bottom:1rem;display:flex;justify-content:space-between;align-items:center;}
+.chart-harga{font-size:1.5rem;font-weight:bold;}
+.chart-naik{color:var(--hijau);font-size:.9rem;}
+
+/* Daftar Aset */
+.daftar-aset{padding:0 1rem;}
+.baris{display:flex;align-items:center;justify-content:space-between;padding:1rem 0;border-bottom:1px solid #333;cursor:pointer;transition:background .2s;}
+.baris:hover{background:rgba(255,255,255,0.05);}
+.kiri{display:flex;align-items:center;gap:.8rem;}
+.logo{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:bold;}
+.nama h4{font-size:1rem;}
+.nama p{font-size:.8rem;color:var(--abu);}
+.kanan{text-align:right;}
+.harga{font-weight:bold;}
+.persen{font-size:.9rem;margin-top:.2rem;}
+.naik{color:var(--hijau);}
+.turun{color:var(--merah);}
+
+/* Nav Bawah */
+.nav-bawah{position:fixed;bottom:0;left:0;right:0;background:var(--card);display:flex;justify-content:space-around;padding:.8rem 0;border-top:1px solid #333;}
+.nav-item{text-align:center;color:var(--abu);font-size:.75rem;}
+.nav-item.aktif{color:var(--teks);}
+.nav-item span{display:block;font-size:1.2rem;margin-bottom:.2rem;}
+</style>
+</head>
+<body>
+
+<!-- Header Atas -->
+<div class="header-atas">
+  <span class="ikon">🔄</span>
+  <input type="text" class="cari" placeholder="Cari aset...">
+  <span class="ikon">🎧</span>
+  <span class="ikon">🔔</span>
+  <span class="ikon">🎁</span>
+</div>
+
+<!-- Saldo -->
+<div class="saldo-section">
+  <div class="saldo">Saldo: Rp <span id="saldo">10.000.000</span></div>
+  <button class="btn-setor">Setoran IDR</button>
+</div>
+
+<!-- Menu Ikon -->
+<div class="menu-ikon">
+  <div class="item-ikon"><div class="bulat">🎁</div><p>Reward</p></div>
+  <div class="item-ikon"><div class="bulat">📈</div><p>Staking</p></div>
+  <div class="item-ikon"><div class="bulat">💬</div><p>Obrolan</p></div>
+  <div class="item-ikon"><div class="bulat">👥</div><p>Undang</p></div>
+  <div class="item-ikon"><div class="bulat">💎</div><p>VIP</p></div>
+  <div class="item-ikon"><div class="bulat">🔑</div><p>Sandi</p></div>
+  <div class="item-ikon"><div class="bulat">📊</div><p>DCA</p></div>
+  <div class="item-ikon"><div class="bulat">⚽</div><p>Piala</p></div>
+</div>
+
+<!-- Iklan -->
+<div class="banner">
+  <div>
+    <h3>Deposit Cepat & Cashback</h3>
+    <p style="font-size:.8rem;opacity:.9">Lewat Virtual Account</p>
+  </div>
+  <span>Rp50RB</span>
+</div>
+
+<!-- Tab -->
+<div class="tab-menu">
+  <div class="tab aktif">Populer</div>
+  <div class="tab">Favorit</div>
+  <div class="tab">Untung</div>
+  <div class="tab">Kepemilikan</div>
+</div>
+
+<!-- Grafik Harga -->
+<div class="chart-container">
+  <div class="chart-judul">
+    <div>
+      <h3 id="namaAset">Bitcoin (BTC)</h3>
+      <div class="chart-harga" id="hargaAset">Rp 1.090.655.215</div>
+    </div>
+    <div class="chart-naik" id="persenAset">+3,03% 24J</div>
+  </div>
+  <canvas id="grafikHarga" height="200"></canvas>
+</div>
+
+<!-- Daftar Aset -->
+<div class="daftar-aset">
+  <div class="baris" onclick="pilihAset('btc')">
+    <div class="kiri">
+      <div class="logo" style="background:#F7931A;">₿</div>
+      <div class="nama"><h4>BTC</h4><p>Bitcoin</p></div>
+    </div>
+    <div class="kanan">
+      <div class="harga">Rp 1.090.655.215</div>
+      <div class="persen naik">+3,03%</div>
+    </div>
+  </div>
+  <div class="baris" onclick="pilihAset('eth')">
+    <div class="kiri">
+      <div class="logo" style="background:#627EEA;">Ξ</div>
+      <div class="nama"><h4>ETH</h4><p>Ethereum</p></div>
+    </div>
+    <div class="kanan">
+      <div class="harga">Rp 29.329.903</div>
+      <div class="persen naik">+3,05%</div>
+    </div>
+  </div>
+  <div class="baris" onclick="pilihAset('bnb')">
+    <div class="kiri">
+      <div class="logo" style="background:#F3BA2F;">B</div>
+      <div class="nama"><h4>BNB</h4><p>BNB</p></div>
+    </div>
+    <div class="kanan">
+      <div class="harga">Rp 9.947.062</div>
+      <div class="persen naik">+0,72%</div>
+    </div>
+  </div>
+</div>
+
+<!-- Nav Bawah -->
+<div class="nav-bawah">
+  <div class="nav-item aktif"><span>🏠</span>Beranda</div>
+  <div class="nav-item"><span>📊</span>Pasar</div>
+  <div class="nav-item"><span>💱</span>Tukar</div>
+  <div class="nav-item"><span>📈</span>Portofolio</div>
+  <div class="nav-item"><span>💳</span>Dompet</div>
+</div>
+
+<script>
 // Data Harga & Grafik Setiap Aset
 const dataAset = {
   btc: {
     nama: "Bitcoin (BTC)",
     harga: 1090655215,
     persen: "+3,03%",
-    warna: "#F7931A",
     dataGrafik: [1050, 1062, 1058, 1070, 1082, 1088, 1090]
   },
   eth: {
     nama: "Ethereum (ETH)",
     harga: 29329903,
     persen: "+3,05%",
-    warna: "#627EEA",
     dataGrafik: [2750, 2810, 2790, 2850, 2890, 2910, 2930]
   },
   bnb: {
     nama: "BNB",
     harga: 9947062,
     persen: "+0,72%",
-    warna: "#F3BA2F",
     dataGrafik: [9800, 9850, 9820, 9880, 9910, 9930, 9947]
   }
 };
 
 let grafikSaatIni;
 
-// Fungsi Buat/Perbarui Grafik
-function buatGrafik(kodeAset) {
+// Fungsi Pilih & Ganti Aset
+function pilihAset(kodeAset) {
   const aset = dataAset[kodeAset];
   const ctx = document.getElementById('grafikHarga').getContext('2d');
 
-  // Hapus grafik lama kalau ada
-  if (grafikSaatIni) grafikSaatIni.destroy();
+  // Perbarui Tampilan
+  document.getElementById('namaAset').textContent = aset.nama;
+  document.getElementById('hargaAset').textContent = "Rp " + aset.harga.toLocaleString('id-ID');
+  document.getElementById('persenAset').textContent = aset.persen + " 24J";
 
-  // Perbarui Tampilan Atas
-  document.querySelector('.chart-judul h3').textContent = aset.nama;
-  document.querySelector('.chart-harga').textContent = "Rp " + aset.harga.toLocaleString('id-ID');
-  document.querySelector('.chart-naik').textContent = aset.persen + " 24J";
+  // Hapus grafik lama
+  if (grafikSaatIni) grafikSaatIni.destroy();
 
   // Buat grafik baru
   grafikSaatIni = new Chart(ctx, {
@@ -55,6 +219,7 @@ function buatGrafik(kodeAset) {
     },
     options: {
       responsive: true,
+      maintainAspectRatio: false,
       plugins: {legend:{display:false}},
       scales: {
         x:{grid:{color:'#333'},ticks:{color:'#9CA3AF'}},
@@ -64,20 +229,10 @@ function buatGrafik(kodeAset) {
   });
 }
 
-// Tambah Fungsi Klik ke Daftar Aset
-document.addEventListener('DOMContentLoaded', function(){
-  // Tambah klik ke baris BTC
-  document.querySelectorAll('.baris')[0].style.cursor = 'pointer';
-  document.querySelectorAll('.baris')[0].onclick = () => buatGrafik('btc');
-  
-  // Tambah klik ke baris ETH
-  document.querySelectorAll('.baris')[1].style.cursor = 'pointer';
-  document.querySelectorAll('.baris')[1].onclick = () => buatGrafik('eth');
-  
-  // Tambah klik ke baris BNB
-  document.querySelectorAll('.baris')[2].style.cursor = 'pointer';
-  document.querySelectorAll('.baris')[2].onclick = () => buatGrafik('bnb');
-
-  // Tampilkan BTC pertama kali
-  buatGrafik('btc');
+// Tampilkan BTC saat pertama kali dibuka
+document.addEventListener('DOMContentLoaded', () => {
+  pilihAset('btc');
 });
+</script>
+</body>
+</html>
